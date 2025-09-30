@@ -1,13 +1,16 @@
 Devbrew Payments Fraud & Sanctions
 Copyright 2025 Devbrew LLC
 
-This research case study includes software developed by Devbrew (https://devbrew.ai).
+This is a research case study developed by Devbrew (https://devbrew.ai) demonstrating
+fraud detection and sanctions screening techniques for cross-border payments.
 
 Datasets and references:
 
-- IEEE-CIS Fraud Detection dataset (Kaggle)
-- PaySim synthetic mobile money transactions
-- OFAC SDN and Consolidated Lists (U.S. Treasury)
+- IEEE-CIS Fraud Detection dataset (Kaggle) - Used for non-commercial research
+- PaySim synthetic mobile money transactions (Kaggle) - Used for non-commercial research
+- OFAC SDN and Consolidated Lists (U.S. Treasury) - Public domain
+
+Note: Datasets are not included in this repository. See data_catalog/README.md for download instructions.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
