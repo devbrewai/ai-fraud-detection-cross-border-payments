@@ -5,6 +5,7 @@ This directory contains datasets used for the fraud detection and sanctions scre
 ## Datasets
 
 ### 1. IEEE-CIS Fraud Detection
+
 - **Source**: [Kaggle Competition](https://www.kaggle.com/c/ieee-fraud-detection)
 - **License**: Non-commercial use only (academic research and education)
 - **Location**: `ieee-fraud/`
@@ -16,12 +17,14 @@ This directory contains datasets used for the fraud detection and sanctions scre
   - `sample_submission.csv` - Submission format reference
 
 ### 2. PaySim Synthetic Dataset
+
 - **Source**: [Kaggle - Synthetic Financial Datasets](https://www.kaggle.com/datasets/ealaxi/paysim1)
 - **License**: Open data
 - **Location**: `paysim/`
 - **Description**: Synthetic mobile money transactions based on real financial logs
 
 ### 3. OFAC Sanctions Lists
+
 - **Source**: [U.S. Treasury Department](https://sanctionssearch.ofac.treas.gov/)
 - **License**: Public domain (U.S. Government data)
 - **Location**: `ofac/`
@@ -87,11 +90,13 @@ curl -o ofac/consolidated.csv https://www.treasury.gov/ofac/downloads/consolidat
 ## Important Notes
 
 ⚠️ **Do not commit raw datasets to version control**
+
 - Datasets are excluded via `.gitignore`
 - Large files bloat repository size
 - Some datasets have license restrictions on redistribution
 
 ✅ **Reproducibility**
+
 - All datasets are publicly available
-- Download instructions provided in tutorial
+- Download instructions provided in setup instructions
 - Processed/cleaned data schemas documented in notebooks
