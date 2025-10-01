@@ -1,0 +1,96 @@
+[project]
+name = "devbrew-payments-fraud-sanctions"
+version = "0.1.0"
+description = "Production-grade fraud detection and sanctions screening for cross-border payments"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+authors = [
+    { name = "Devbrew LLC" }
+]
+
+dependencies = [
+    # Web Framework
+    "fastapi>=0.109.0",
+    "uvicorn[standard]>=0.27.0",
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.1.0",
+    
+    # ML/Data Science
+    "lightgbm>=4.1.0",
+    "xgboost>=2.0.0",
+    "scikit-learn>=1.4.0",
+    "pandas>=2.1.0",
+    "numpy>=1.26.0",
+    "shap>=0.44.0",
+    
+    # Fuzzy Matching
+    "rapidfuzz>=3.6.0",
+    
+    # Database & Cache
+    "redis>=5.0.0",
+    "psycopg2-binary>=2.9.9",
+    "sqlalchemy>=2.0.25",
+    
+    # Utilities
+    "python-dotenv>=1.0.0",
+    "httpx>=0.26.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    # Jupyter & Notebooks
+    "jupyter>=1.0.0",
+    "notebook>=7.0.0",
+    "ipykernel>=6.28.0",
+    "ipywidgets>=8.1.0",
+    
+    # Data Exploration
+    "matplotlib>=3.8.0",
+    "seaborn>=0.13.0",
+    "plotly>=5.18.0",
+    
+    # Testing
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=4.1.0",
+    "httpx>=0.26.0",
+    
+    # Code Quality
+    "ruff>=0.1.0",
+    "black>=23.12.0",
+    "mypy>=1.8.0",
+]
+
+[tool.uv]
+dev-dependencies = []
+package = false  # This is an application, not a library
+
+# Uncomment when apps/ and packages/ have code:
+# [tool.uv.workspace]
+# members = ["apps/*", "packages/*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W"]
+ignore = ["E501"]
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+asyncio_mode = "auto"
