@@ -109,10 +109,10 @@ mv ~/Downloads/alt.csv ofac/sdn/
 mv ~/Downloads/sdn_comments.csv ofac/sdn/
 
 # Move Consolidated list files
-mv ~/Downloads/CONS_PRIM.CSV ofac/consolidated/
-mv ~/Downloads/CONS_ADD.CSV ofac/consolidated/
-mv ~/Downloads/CONS_ALT.CSV ofac/consolidated/
-mv ~/Downloads/CONS_COMMENTS.CSV ofac/consolidated/
+mv ~/Downloads/cons_prim.csv ofac/consolidated/
+mv ~/Downloads/cons_add.csv ofac/consolidated/
+mv ~/Downloads/cons_alt.csv ofac/consolidated/
+mv ~/Downloads/cons_comments.csv ofac/consolidated/
 ```
 
 **Alternative**: If you prefer XML format, download the XML versions and adjust filenames accordingly.
