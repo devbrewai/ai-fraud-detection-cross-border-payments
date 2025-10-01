@@ -76,16 +76,46 @@ rm paysim1.zip
 
 ### 3. Download OFAC Sanctions Lists
 
+**Note**: OFAC has updated their download system. Automated curl downloads are no longer supported.
+
+**Manual Download Steps**:
+
+1. Visit the OFAC Sanctions List site:
+
+   - SDN List: https://sanctionslist.ofac.treas.gov/Home/SdnList
+   - Consolidated List: https://sanctionslist.ofac.treas.gov/Home/ConsolidatedList
+
+2. Download **CSV format** for both lists (recommended for easier processing):
+   - **SDN List**: Download all 4 CSV files:
+     - `SDN.CSV` (primary names)
+     - `ADD.CSV` (addresses)
+     - `ALT.CSV` (alternate/AKA names - critical for fuzzy matching)
+     - `SDN_COMMENTS.CSV` (extended remarks)
+   - **Consolidated List**: Download all 4 CSV files:
+     - `CONS_PRIM.CSV` (primary names)
+     - `CONS_ADD.CSV` (addresses)
+     - `CONS_ALT.CSV` (alternate/AKA names)
+     - `CONS_COMMENTS.CSV` (extended remarks)
+3. Move downloaded files to the project:
+
 ```bash
 cd data_catalog
-mkdir -p ofac
+mkdir -p ofac/sdn ofac/consolidated
 
-# Download SDN List (XML format)
-curl -o ofac/sdn.xml https://www.treasury.gov/ofac/downloads/sdn.xml
+# Move SDN list files
+mv ~/Downloads/sdn.csv ofac/sdn/
+mv ~/Downloads/add.csv ofac/sdn/
+mv ~/Downloads/alt.csv ofac/sdn/
+mv ~/Downloads/sdn_comments.csv ofac/sdn/
 
-# Download Consolidated Sanctions List (CSV format)
-curl -o ofac/consolidated.csv https://www.treasury.gov/ofac/downloads/consolidated/consolidated.csv
+# Move Consolidated list files
+mv ~/Downloads/CONS_PRIM.CSV ofac/consolidated/
+mv ~/Downloads/CONS_ADD.CSV ofac/consolidated/
+mv ~/Downloads/CONS_ALT.CSV ofac/consolidated/
+mv ~/Downloads/CONS_COMMENTS.CSV ofac/consolidated/
 ```
+
+**Alternative**: If you prefer XML format, download the XML versions and adjust filenames accordingly.
 
 ## Important Notes
 
