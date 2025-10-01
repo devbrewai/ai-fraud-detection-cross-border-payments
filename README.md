@@ -22,7 +22,7 @@ This repository showcases a complete pipeline to:
   - [IEEE-CIS e-commerce fraud dataset](https://www.kaggle.com/c/ieee-fraud-detection)
   - [PaySim synthetic mobile money dataset](https://www.kaggle.com/ntnu-testimon/paysim1)
 - **Sanctions screening**
-  - [OFAC SDN and Consolidated Lists](https://home.treasury.gov/policy-issues/financial-sanctions/consolidated-sanctions-list-data-files)
+  - [OFAC SDN and Consolidated Lists](https://sanctionslist.ofac.treas.gov/Home)
 
 ---
 
@@ -62,12 +62,28 @@ cd devbrew-payments-fraud-sanctions
 
 ### 2. Setup environment
 
+**Using UV (recommended):**
+
+```bash
+# Install UV
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Sync dependencies (creates .venv automatically)
+uv sync
+
+# Activate virtual environment
+source .venv/bin/activate   # Linux/Mac
+.venv\Scripts\activate      # Windows
+```
+
+**Or using pip:**
+
 ```bash
 python -m venv .venv
 source .venv/bin/activate   # Linux/Mac
-.venv\Scripts\activate    # Windows
+.venv\Scripts\activate      # Windows
 
-pip install -r requirements.txt
+uv pip install -e .         # Install from pyproject.toml
 ```
 
 ### 3. Run API locally
