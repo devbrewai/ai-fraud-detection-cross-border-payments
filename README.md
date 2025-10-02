@@ -1,43 +1,60 @@
-# Devbrew Payments Fraud & Sanctions
+# Cross-Border Payments Fraud
 
-**Production-grade research case study** from Devbrew.  
-Demonstrates real-time fraud detection and OFAC sanctions screening for cross-border payments using public/synthetic datasets.  
-Includes training notebooks, inference API, and a demo UI. Open-sourced under Apache 2.0.
+**Open-source research case study** from Devbrew.
+
+Demonstrates fraud detection and OFAC sanctions screening for cross-border payments, with a focus on real-time performance.
+
+_For research/educational use only — not production-ready._
 
 ---
+
+This repository demonstrates how to build a low-latency pipeline for **fraud detection** and **sanctions screening** in cross-border payments.
+
+It combines public and synthetic datasets (IEEE-CIS, PaySim, OFAC) with modern ML and API tooling to provide:
+
+- Training notebooks for fraud modeling and sanctions matching
+- An inference API built with FastAPI
+- A demo UI with real-time scoring and explainability
+- Documentation, ROI framing, and reference architecture
+
+The project is licensed under **Apache 2.0**.
+
+Models trained on IEEE-CIS data are restricted to **non-commercial research use**.
 
 ## Overview
 
-This repository showcases a complete pipeline to:
+This project is a **reference pipeline** for fraud detection and sanctions screening in cross-border payments.
 
-- Score card-not-present (CNP) transactions for fraud risk.
-- Screen names against OFAC sanctions lists with fuzzy matching.
-- Return risk score, top contributing features, and sanctions matches in <200ms.
+It demonstrates how to:
 
----
+- Detect fraud in **card-not-present (CNP) transactions** using public and synthetic datasets.
+- Screen sender/receiver names against the **OFAC Sanctions Lists** with fuzzy matching.
+- Generate a fraud risk score, highlight top contributing features, and return sanctions match results, **targeting latency under 200ms**.
+
+> **Note**  
+> This is a **research case study**, not a production system.
+
+Models trained on the IEEE-CIS dataset are for **non-commercial research use only**.
+For production deployments, retraining on proprietary or licensed datasets is required.
 
 ## Data Sources
 
 - **Fraud detection**
-  - [IEEE-CIS e-commerce fraud dataset](https://www.kaggle.com/c/ieee-fraud-detection)
-  - [PaySim synthetic mobile money dataset](https://www.kaggle.com/ntnu-testimon/paysim1)
+  - [IEEE-CIS e-commerce fraud dataset](https://www.kaggle.com/c/ieee-fraud-detection) - research only (non-commercial license)
+  - [PaySim synthetic mobile money dataset](https://www.kaggle.com/ntnu-testimon/paysim1) - open data
 - **Sanctions screening**
-  - [OFAC SDN and Consolidated Lists](https://sanctionslist.ofac.treas.gov/Home)
-
----
+  - [OFAC SDN and Consolidated Lists](https://sanctionslist.ofac.treas.gov/Home) -— public domain
 
 ## Tech Stack
 
 - **Backend**: FastAPI, Python, LightGBM/XGBoost, Redis, PostgreSQL
 - **Frontend**: Next.js, Tailwind, Vercel
-- **Hosting**: Fly.io or Render (API), Vercel (UI)
-
----
+- **Hosting**: Fly.io or Render (API), Vercel (UI) or any cloud service provider (e.g. AWS, GCP, Azure, DigitalOcean, Heroku, etc.)
 
 ## Repo Structure
 
 ```
-devbrew-payments-fraud-sanctions/
+cross-border-payments-fraud/
   ├── apps/
   │   ├── api/           # FastAPI scoring service
   │   └── web/           # Next.js demo UI
@@ -49,15 +66,13 @@ devbrew-payments-fraud-sanctions/
   └── notebooks/         # EDA + model training
 ```
 
----
-
 ## Quickstart
 
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/devbrewai/devbrew-payments-fraud-sanctions.git
-cd devbrew-payments-fraud-sanctions
+git clone https://github.com/devbrewai/cross-border-payments-fraud.git
+cd cross-border-payments-fraud
 ```
 
 ### 2. Setup environment
@@ -100,39 +115,35 @@ npm install
 npm run dev
 ```
 
----
-
 ## Demo
 
-- Web UI (Vercel): _coming soon_
-- API endpoint (Render/Fly.io): _coming soon_
-
----
+- Video walkthrough: _planned_
+- Optional live demo endpoint (rate-limited): _planned_
 
 ## Documentation
 
 - [PRD](./docs/PRD.md) — detailed product requirements
 - ROI one-pager (coming soon)
 
----
+## Disclaimer
+
+This repository is provided for **educational and research purposes only**.
+
+- The **IEEE-CIS Fraud Dataset** is licensed for **non-commercial use only** and may not be redistributed or used to train commercial models.
+- Any **trained model artifacts** derived from IEEE-CIS data are intended solely for demonstration and benchmarking.
+- For production systems, you must retrain the pipeline on your own **proprietary or licensed datasets**.
+- The **PaySim** and **OFAC Sanctions Lists** datasets are open/public and may be used more broadly, subject to their respective terms.
+
+Devbrew makes no representations or warranties regarding the suitability of this code for production use. Use at your own risk and ensure compliance with all applicable laws, regulations, and dataset licenses.
 
 ## License
 
 Apache 2.0 © Devbrew LLC. See [LICENSE](./LICENSE).  
-NOTICE file includes dataset attributions.
-
----
+[NOTICE](./NOTICE) file includes dataset attributions.
 
 ## Contributing
 
 Contributions are welcome!
 
 - Open an issue for bugs or feature requests.
-- Submit a PR following our contribution guidelines.
-
----
-
-## ROI Headline
-
-> Block X% more fraudulent transactions at Y% false positive rate.  
-> Screen sanctions in <200 ms end-to-end.
+- Submit a PR following our contribution guidelines [here](./CONTRIBUTING.md).
