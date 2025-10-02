@@ -134,3 +134,9 @@ Contributions are welcome!
 
 - Open an issue for bugs or feature requests.
 - Submit a PR following our contribution guidelines [here](./CONTRIBUTING.md).
+
+## Contact
+
+Questions about this research project? Reach out at **hello@devbrew.ai**
+
+**Note:** We cannot provide commercial licensing for models trained on IEEE-CIS data due to dataset restrictions. For production fraud detection systems, contact us about building custom solutions with licensed data.
