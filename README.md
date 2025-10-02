@@ -108,6 +108,7 @@ npm run dev
 ## Documentation
 
 - [Research Requirements](./docs/research-requirements.md) — detailed case study specifications
+- [Roadmap](./docs/roadmap.md) — project phases and success criteria
 - Case Study Summary: _planned_ (pending results validation)
 
 ## Disclaimer
