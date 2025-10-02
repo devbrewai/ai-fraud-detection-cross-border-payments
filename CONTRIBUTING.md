@@ -41,23 +41,27 @@ Resources for first-time contributors:
 1. Fork the repository and create a topic branch (e.g., `fix/data-catalog` or `feat/shap-explainability`).
 2. Make your changes, keeping commits atomic and descriptive.
 3. Run linting/tests if applicable.
-4. Submit a pull request with:
-   - **What** the change does
-   - **Why** it’s needed
-   - **How** it works
+4. Submit a pull request:
+   - Fill in the **PR template** (or include similar information) when you create the PR - please follow its structure.
+   - Ensure your **PR title** follows the Angular convention: `<type>(<scope>): <subject>`
+   - Include:
+     - **What** the change does
+     - **Why** it's needed
+     - **How** it works
+   - Make sure your branch is up-to-date with main and that you have resolved merge conflicts.
+   - Mark the PR as Ready for review only when you believe it is in a merge-able state.
 
 ## Bug Reports
 
 If you discover a bug:
 
-- Check existing issues to avoid duplicates.
 - File a new issue with:
   1. Steps to reproduce
   2. Expected behavior
   3. Actual behavior
   4. Environment (OS, Python version, etc.)
 
-**Security issues** should not be filed as issues. Please email **security@devbrew.ai** instead.
+**Security issues** (e.g., exposed credentials, vulnerable dependencies) should be reported via GitHub Issues or emailed to **hello@devbrew.ai**.
 
 ## Feature Requests
 
@@ -65,7 +69,7 @@ If you’d like to propose a new feature:
 
 - Open an issue first to discuss feasibility.
 - Explain the use case, why it’s needed, and how it might work.
-- Keep in mind this is a **research case study** — not all production-style features are in scope.
+- Keep in mind this is a **research case study** - not all production-style features are in scope.
 
 ## Code Review Process
 
