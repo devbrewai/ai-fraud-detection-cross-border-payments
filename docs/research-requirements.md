@@ -13,8 +13,10 @@ The deliverable is a **reference implementation and demo** that:
 - Returns a fraud risk score, top contributing features, and any sanctions matches.
 - Targets end-to-end latency **under 200 ms**.
 
-> **Important**: For **research/educational use only** — not production-ready.  
-> Models trained on IEEE-CIS data are restricted to **non-commercial use**.  
+> [!WARNING]
+> **For research/educational use only** — not production-ready.
+>
+> Models trained on IEEE-CIS data are restricted to **non-commercial use**.
 > Production deployments require retraining on proprietary or licensed datasets.
 
 Repo: `devbrewai/cross-border-payments-fraud`  
