@@ -107,8 +107,8 @@ npm run dev
 
 ## Documentation
 
-- [PRD](./docs/PRD.md) — detailed research case study requirements
-- ROI one-pager: _planned_
+- [Research Requirements](./docs/research-requirements.md) — detailed case study specifications
+- Case Study Summary: _planned_ (pending results validation)
 
 ## Disclaimer
 
