@@ -15,7 +15,7 @@ This reference pipeline combines public datasets (IEEE-CIS, PaySim, OFAC) with m
 - Next.js demo UI with real-time scoring
 - Documentation and reference architecture (ROI framing planned)
 
-> **Note**: For **research/educational use only**, not production-ready.
+> [!WARNING] **For research/educational use only** — not production-ready.
 >
 > Models trained on IEEE-CIS data are restricted to **non-commercial use**.
 > Production deployments require retraining on proprietary or licensed datasets.
