@@ -2,12 +2,24 @@
 
 This directory contains datasets used for the fraud detection and sanctions screening research case study.
 
+> [!WARNING]
+> **IEEE-CIS Dataset Restrictions**
+>
+> The IEEE-CIS Fraud Detection dataset is licensed for **non-commercial research use only**.
+> - Cannot redistribute the dataset
+> - Cannot use trained models commercially
+> - Must comply with [Kaggle competition rules](https://www.kaggle.com/c/ieee-fraud-detection/rules)
+
 ## Datasets
 
 ### 1. IEEE-CIS Fraud Detection
 
 - **Source**: [Kaggle Competition](https://www.kaggle.com/c/ieee-fraud-detection)
-- **License**: Non-commercial use only (academic research and education)
+- **License**: Non-commercial research use only
+  - **Cannot redistribute** dataset or trained models
+  - **Cannot use for commercial model training**
+  - Academic research and education only
+  - Must accept [competition rules](https://www.kaggle.com/c/ieee-fraud-detection/rules)
 - **Location**: `ieee-fraud/`
 - **Files**:
   - `train_transaction.csv` - Training transaction data (~590K rows)
@@ -119,14 +131,23 @@ mv ~/Downloads/cons_comments.csv ofac/consolidated/
 
 ## Important Notes
 
-⚠️ **Do not commit raw datasets to version control**
+> [!CAUTION]
+> **IEEE-CIS Dataset Compliance**
+>
+> - **Do NOT redistribute** IEEE-CIS raw data (violates license)
+> - **Do NOT commit** datasets to version control
+> - **Do NOT use** trained models for commercial purposes
+> - **Do NOT remove** license attributions from shared models
+> - **Only for** academic research and education
+> - Trained models may be shared for research/educational purposes with proper attribution
 
-- Datasets are excluded via `.gitignore`
+**All datasets excluded via `.gitignore`:**
 - Large files bloat repository size
-- Some datasets have license restrictions on redistribution
+- IEEE-CIS has strict redistribution restrictions
+- PaySim and OFAC are open but still shouldn't bloat repo
 
-✅ **Reproducibility**
+**Reproducibility**
 
 - All datasets are publicly available
-- Download instructions provided in setup instructions
+- Download instructions provided above
 - Processed/cleaned data schemas documented in notebooks
