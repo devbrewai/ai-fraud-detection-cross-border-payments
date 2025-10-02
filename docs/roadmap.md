@@ -8,8 +8,6 @@ This roadmap outlines the phases, tasks, and success criteria for building this 
 
 Last Updated: 2025-10-02
 
----
-
 ## Phase 1: Data Preparation & Exploration
 
 **Status:** 🟡 In Progress
@@ -33,17 +31,17 @@ Last Updated: 2025-10-02
 - [ ] Save processed features to disk
 
 **Success Criteria:**
+
 - [ ] All datasets loaded and validated
 - [ ] Data quality issues documented
 - [ ] Feature engineering complete
 - [ ] Clean dataset ready for model training
 
 **Key Findings:**
+
 - IEEE-CIS: 590K rows, 394 columns, 3.5% fraud rate (1:29 imbalance)
 - 374/394 columns have missing values (some >90%)
 - No duplicate rows
-
----
 
 ## Phase 2: Fraud Model Training
 
@@ -66,11 +64,10 @@ Last Updated: 2025-10-02
 - [ ] Document model performance and limitations
 
 **Success Criteria:**
+
 - [ ] ROC-AUC ≥ 0.85 on test set
 - [ ] Model explainability implemented
 - [ ] Model artifacts saved and versioned
-
----
 
 ## Phase 3: Sanctions Screening Module
 
@@ -88,11 +85,10 @@ Last Updated: 2025-10-02
 - [ ] Document matching logic and edge cases
 
 **Success Criteria:**
+
 - [ ] Fuzzy matching working with confidence scores
 - [ ] Country/date filters implemented
 - [ ] Matching latency <50ms
-
----
 
 ## Phase 4: API Service & Infrastructure
 
@@ -112,12 +108,11 @@ Last Updated: 2025-10-02
 - [ ] Write API tests
 
 **Success Criteria:**
+
 - [ ] API returns risk_score, top_features, sanctions_match
 - [ ] End-to-end latency ≤ 200ms p95
 - [ ] Audit logs stored in PostgreSQL
 - [ ] Redis caching working for velocity features
-
----
 
 ## Phase 5: Demo UI
 
@@ -136,11 +131,10 @@ Last Updated: 2025-10-02
 - [ ] Deploy demo (Vercel)
 
 **Success Criteria:**
+
 - [ ] Working demo UI with real-time scoring
 - [ ] All visualizations functional
 - [ ] Deployed and accessible
-
----
 
 ## Phase 6: Documentation & Case Study Summary
 
@@ -157,12 +151,11 @@ Last Updated: 2025-10-02
 - [ ] Verify all dataset attributions and licenses
 
 **Success Criteria:**
+
 - [ ] Complete documentation of approach
 - [ ] Case study summary published
 - [ ] Reproducible setup instructions
 - [ ] All compliance requirements met
-
----
 
 ## Overall Success Criteria
 
@@ -173,9 +166,6 @@ Last Updated: 2025-10-02
 - [ ] Working demo with all components integrated
 - [ ] IEEE-CIS license compliance verified
 
----
-
 ## Next Steps
 
 **Current Focus:** Phase 1 - Complete EDA on PaySim and OFAC datasets, then move to feature engineering.
-
