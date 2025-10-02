@@ -125,7 +125,8 @@ Devbrew makes no representations or warranties regarding the suitability of this
 
 ## License
 
-Apache 2.0 © Devbrew LLC. See [LICENSE](./LICENSE).  
+Apache 2.0 © Devbrew LLC. See [LICENSE](./LICENSE).
+
 [NOTICE](./NOTICE) file includes dataset attributions.
 
 ## Contributing
