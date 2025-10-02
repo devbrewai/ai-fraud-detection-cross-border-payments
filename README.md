@@ -1,41 +1,26 @@
 # Cross-Border Payments Fraud
 
-**Open-source research case study** from Devbrew.
+**Open-source research case study** from Devbrew demonstrating fraud detection and OFAC sanctions screening for cross-border payments.
 
-Demonstrates fraud detection and OFAC sanctions screening for cross-border payments, with a focus on real-time performance.
+This reference pipeline combines public datasets (IEEE-CIS, PaySim, OFAC) with modern ML and API tooling to:
 
-_For research/educational use only — not production-ready._
+- Detect fraud in **card-not-present (CNP) transactions**
+- Screen sender/receiver names against **OFAC Sanctions Lists** with fuzzy matching
+- Generate fraud risk scores with explainability, **targeting sub-200ms latency**
 
----
-
-This repository demonstrates how to build a low-latency pipeline for **fraud detection** and **sanctions screening** in cross-border payments.
-
-It combines public and synthetic datasets (IEEE-CIS, PaySim, OFAC) with modern ML and API tooling to provide:
+**What's included:**
 
 - Training notebooks for fraud modeling and sanctions matching
-- An inference API built with FastAPI
-- A demo UI with real-time scoring and explainability
-- Documentation, ROI framing, and reference architecture
+- FastAPI inference service
+- Next.js demo UI with real-time scoring
+- Documentation and reference architecture (ROI framing planned)
 
-The project is licensed under **Apache 2.0**.
+> **Note**: For **research/educational use only**, not production-ready.
+>
+> Models trained on IEEE-CIS data are restricted to **non-commercial use**.
+> Production deployments require retraining on proprietary or licensed datasets.
 
-Models trained on IEEE-CIS data are restricted to **non-commercial research use**.
-
-## Overview
-
-This project is a **reference pipeline** for fraud detection and sanctions screening in cross-border payments.
-
-It demonstrates how to:
-
-- Detect fraud in **card-not-present (CNP) transactions** using public and synthetic datasets.
-- Screen sender/receiver names against the **OFAC Sanctions Lists** with fuzzy matching.
-- Generate a fraud risk score, highlight top contributing features, and return sanctions match results, **targeting latency under 200ms**.
-
-> **Note**  
-> This is a **research case study**, not a production system.
-
-Models trained on the IEEE-CIS dataset are for **non-commercial research use only**.
-For production deployments, retraining on proprietary or licensed datasets is required.
+**License:** Apache 2.0
 
 ## Data Sources
 
@@ -122,8 +107,8 @@ npm run dev
 
 ## Documentation
 
-- [PRD](./docs/PRD.md) — detailed product requirements
-- ROI one-pager (coming soon)
+- [PRD](./docs/PRD.md) — detailed research case study requirements
+- ROI one-pager: _planned_
 
 ## Disclaimer
 
