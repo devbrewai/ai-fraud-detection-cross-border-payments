@@ -1,22 +1,23 @@
 # Cross-Border Payments Fraud
 
-**Open-source research case study** from Devbrew demonstrating fraud detection and OFAC sanctions screening for cross-border payments.
+**Open-source research case study** from [Devbrew](https://www.devbrew.ai) demonstrating fraud detection and OFAC sanctions screening for cross-border payments.
 
 This reference pipeline combines public datasets (IEEE-CIS, PaySim, OFAC) with modern ML and API tooling to:
 
-- Detect fraud in **card-not-present (CNP) transactions**
-- Screen sender/receiver names against **OFAC Sanctions Lists** with fuzzy matching
-- Generate fraud risk scores with explainability, **targeting sub-200ms latency**
+- Detect fraud in **card-not-present (CNP) transactions** using trained ML models
+- Screen transaction parties against the **OFAC Sanctions Lists** with fuzzy-matching techniques
+- Deliver explainable fraud risk scores in real time, with a latency target of **sub-200ms**
 
-**What's included:**
+**Planned deliverables:**
 
-- Training notebooks for fraud modeling and sanctions matching
-- FastAPI inference service
-- Next.js demo UI with real-time scoring
-- Documentation and reference architecture (ROI framing planned)
+- Notebooks for building and training fraud detection models and sanctions screeners
+- A FastAPI service for real-time model inference
+- A demo UI with fraud scores and explainability outputs
+- Documentation and reference architecture
 
-> [!WARNING]
-> **For research/educational use only** — not production-ready.
+_This case study is in active development._
+
+> [!WARNING] > **For research/educational use only** — not production-ready.
 >
 > Models trained on IEEE-CIS data are restricted to **non-commercial use**.
 > Production deployments require retraining on proprietary or licensed datasets.
@@ -29,7 +30,7 @@ This reference pipeline combines public datasets (IEEE-CIS, PaySim, OFAC) with m
   - [IEEE-CIS e-commerce fraud dataset](https://www.kaggle.com/c/ieee-fraud-detection) - research only (non-commercial license)
   - [PaySim synthetic mobile money dataset](https://www.kaggle.com/ntnu-testimon/paysim1) - open data
 - **Sanctions screening**
-  - [OFAC SDN and Consolidated Lists](https://sanctionslist.ofac.treas.gov/Home) -— public domain
+  - [OFAC SDN and Consolidated Lists](https://sanctionslist.ofac.treas.gov/Home) - public domain
 
 ## Tech Stack
 
