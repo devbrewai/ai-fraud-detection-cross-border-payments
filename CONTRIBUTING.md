@@ -1,8 +1,8 @@
 # Contributing
 
-First off, thank you for your interest in contributing to this project.
+Thank you for your interest in contributing to this project.
 
-This project is maintained by Devbrew as an **open-source research case study** and is under active development. The code will likely change pretty significantly. While it is **not production-ready**, we welcome contributions that improve clarity, reproducibility, and research value.
+This project is maintained by [Devbrew](https://devbrew.ai/) as an **open-source research case study** and is under active development. The code will likely change pretty significantly. While it is **not production-ready**, we welcome contributions that improve clarity, reproducibility, and research value.
 
 Following these guidelines helps us respect everyone’s time. In return, we’ll do our best to review issues, assess changes, and help finalize pull requests.
 
