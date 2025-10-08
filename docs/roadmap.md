@@ -20,7 +20,7 @@ Last Updated: 2025-10-02
 - [x] Build helper functions for data loading and quality analysis
 - [x] Perform initial EDA on IEEE-CIS train data
 - [x] Analyze PaySim dataset
-- [ ] Analyze OFAC sanctions lists (SDN + Consolidated)
+- [x] Analyze OFAC sanctions lists (SDN + Consolidated)
 - [ ] Define missing value handling strategy (>90% missing columns)
 - [ ] Engineer fraud detection features:
   - [ ] Velocity counters (transactions per user 1h/24h)
