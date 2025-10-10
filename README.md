@@ -18,8 +18,7 @@ This reference pipeline combines public datasets (IEEE-CIS, PaySim, OFAC) with m
 _This case study is in active development._
 
 > [!WARNING]
->
-> > **For research/educational use only**
+> **For research/educational use only**
 >
 > Models trained on IEEE-CIS data are restricted to **non-commercial use**.
 > Production deployments require retraining on proprietary or licensed datasets.
