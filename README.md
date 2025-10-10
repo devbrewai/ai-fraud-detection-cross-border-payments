@@ -1,6 +1,6 @@
-# Cross-Border Payments Fraud
+# AI Fraud Detection & Sanctions Screening for Cross-Border Payments
 
-**Open-source research case study** from [Devbrew](https://www.devbrew.ai) demonstrating fraud detection and OFAC sanctions screening for cross-border payments.
+**Open-source research case study** from [Devbrew](https://www.devbrew.ai) demonstrating AI fraud detection and sanctions screening (using OFAC lists) for cross-border payments.
 
 This reference pipeline combines public datasets (IEEE-CIS, PaySim, OFAC) with modern ML and API tooling to:
 
@@ -18,7 +18,8 @@ This reference pipeline combines public datasets (IEEE-CIS, PaySim, OFAC) with m
 _This case study is in active development._
 
 > [!WARNING]
-> **For research/educational use only** — not production-ready.
+>
+> > **For research/educational use only**
 >
 > Models trained on IEEE-CIS data are restricted to **non-commercial use**.
 > Production deployments require retraining on proprietary or licensed datasets.
@@ -42,7 +43,7 @@ _This case study is in active development._
 ## Repo Structure
 
 ```
-cross-border-payments-fraud/
+ai-fraud-detection-cross-border-payments/
   ├── apps/
   │   ├── api/           # FastAPI scoring service
   │   └── web/           # Next.js demo UI
@@ -59,8 +60,8 @@ cross-border-payments-fraud/
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/devbrewai/cross-border-payments-fraud.git
-cd cross-border-payments-fraud
+git clone https://github.com/devbrewai/ai-fraud-detection-cross-border-payments.git
+cd ai-fraud-detection-cross-border-payments
 ```
 
 ### 2. Setup environment

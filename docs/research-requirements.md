@@ -1,10 +1,10 @@
 # Research Case Study Requirements
 
-**Cross-Border Payments Fraud & Sanctions Screening**
+**AI Fraud Detection & Sanctions Screening for Cross-Border Payments**
 
 ## Overview
 
-This project is an **open-source research case study** demonstrating fraud detection and sanctions screening concepts for cross-border payments.
+This project is an **open-source research case study** demonstrating AI fraud detection and sanctions screening concepts for cross-border payments.
 
 The deliverable is a **reference implementation and demo** that:
 
@@ -14,12 +14,13 @@ The deliverable is a **reference implementation and demo** that:
 - Targets end-to-end latency **under 200 ms**.
 
 > [!WARNING]
-> **For research/educational use only** — not production-ready.
+>
+> > **For research/educational use only**
 >
 > Models trained on IEEE-CIS data are restricted to **non-commercial use**.
 > Production deployments require retraining on proprietary or licensed datasets.
 
-Repo: `devbrewai/cross-border-payments-fraud`  
+Repo: `devbrewai/ai-fraud-detection-cross-border-payments`  
 License: **Apache 2.0**
 
 ## Target Audience
@@ -124,7 +125,7 @@ The goal is to demonstrate practical ML engineering patterns, feature design, an
 ## Project Structure
 
 ```
-cross-border-payments-fraud/
+ai-fraud-detection-cross-border-payments/
   ├── apps/
   │   ├── api/           # FastAPI scoring service
   │   └── web/           # Next.js demo UI
