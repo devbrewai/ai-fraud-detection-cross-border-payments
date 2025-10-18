@@ -207,6 +207,13 @@ marimo/_lsp/
 __marimo__/
 
 # Data files
-# Exclude all datasets but allow documentation
-data_catalog/*
+# Exclude raw datasets (IEEE-CIS cannot be redistributed per Kaggle rules)
+# Allow processed/derived data and documentation
+data_catalog/ieee-fraud/*.csv
+data_catalog/paysim/*.csv
+data_catalog/ofac/sdn/*.csv
+data_catalog/ofac/sdn/*.xml
+data_catalog/ofac/consolidated/*.csv
+data_catalog/ofac/consolidated/*.xml
 !data_catalog/README.md
+!data_catalog/processed/
