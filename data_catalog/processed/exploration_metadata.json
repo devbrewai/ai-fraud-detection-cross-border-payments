@@ -1,0 +1,21 @@
+{
+  "exploration_date": "2025-10-18T16:32:57.118458",
+  "ieee_cis": {
+    "sample_size": 50000,
+    "total_features": 434,
+    "fraud_rate": 2.714,
+    "imbalance_ratio": 36.84598378776713,
+    "missing_columns": 359,
+    "duplicate_rows": 0
+  },
+  "paysim": {
+    "sample_size": 50000,
+    "total_features": 11,
+    "fraud_rate": 0.2,
+    "imbalance_ratio": 500.0
+  },
+  "ofac": {
+    "total_entities": 39350,
+    "output_file": "data_catalog/processed/sanctions_names.csv"
+  }
+}

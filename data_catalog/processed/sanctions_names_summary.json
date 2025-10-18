@@ -1,0 +1,12 @@
+{
+    "total_entries": 39350,
+    "unique_entities": 18310,
+    "sources": {
+        "SDN_ALT": 19897,
+        "SDN": 17944,
+        "CONS_ALT": 1066,
+        "CONS": 443
+    },
+    "country_coverage_pct": 85.01143583227446,
+    "export_date": "2025-10-18T14:24:58.726769"
+}
