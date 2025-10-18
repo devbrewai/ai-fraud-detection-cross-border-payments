@@ -44,6 +44,14 @@ Last Updated: 2025-10-02
 - No duplicate rows
 - **Development Best Practice**: Built reusable helper functions with validation tests during exploration phase. These tests verify data loading, quality analysis, and visualization functions work correctly before production use. Post-development, verbose tests will be replaced with minimal validation for clean, production-ready notebooks while maintaining safety checks
 
+**Cross-Dataset Insights:**
+
+- **Class Imbalance**: Both IEEE-CIS (1:37) and PaySim (1:500) are highly imbalanced; stratified sampling and proper CV are mandatory
+- **Feature Coverage**: IEEE-CIS has 434 features enabling richer modeling; PaySim has 11 features but includes explicit transaction types useful for rule-based features
+- **Compliance Integration**: OFAC sanctions data (39,350 entities) preprocessed and ready for fuzzy matching pipeline integration
+- **Modeling Strategy**: Side-by-side metrics reveal algorithm choice and tuning must account for different imbalance ratios and feature availability
+- **Deployment Planning**: Conditional logic implemented to handle missing/unloaded datasets gracefully during analysis
+
 ## Phase 2: Fraud Model Training
 
 **Status:** ⚪ Not Started
