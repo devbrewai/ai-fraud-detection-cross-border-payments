@@ -6,6 +6,7 @@ This directory contains datasets used for the fraud detection and sanctions scre
 > **IEEE-CIS Dataset Restrictions**
 >
 > The IEEE-CIS Fraud Detection dataset is licensed for **non-commercial research use only**.
+>
 > - Cannot redistribute the dataset
 > - Cannot use trained models commercially
 > - Must comply with [Kaggle competition rules](https://www.kaggle.com/c/ieee-fraud-detection/rules)
@@ -39,10 +40,34 @@ This directory contains datasets used for the fraud detection and sanctions scre
 
 - **Source**: [U.S. Treasury Department](https://sanctionssearch.ofac.treas.gov/)
 - **License**: Public domain (U.S. Government data)
-- **Location**: `ofac/`
+- **Location**: `ofac/` (raw data, not committed)
 - **Files**:
   - SDN List (Specially Designated Nationals)
   - Consolidated Sanctions List
+
+### 4. Processed Data (Included in Repository)
+
+- **Location**: `processed/`
+- **Description**: Pre-processed datasets and metadata included in the repository for convenience
+- **Files**:
+  - `sanctions_names.csv` / `sanctions_names.parquet` - Processed OFAC sanctions names (~39K entities)
+  - `sanctions_names_summary.json` - Statistics on sanctions data coverage
+  - `exploration_metadata.json` - Dataset overview and quality metrics
+- **Note**: These files are derived from public domain OFAC data and contain no proprietary information
+
+## Quick Start
+
+**Option A: Use Processed Data (Fastest)**
+
+The `processed/` directory contains pre-processed OFAC sanctions data ready to use. This is sufficient for:
+
+- Sanctions screening module development
+- Testing fuzzy matching algorithms
+- Initial prototyping
+
+**Option B: Download Full Raw Datasets**
+
+For fraud model training and full EDA, download the raw datasets following the instructions below.
 
 ## Setup Instructions
 
@@ -86,7 +111,9 @@ unzip paysim1.zip -d paysim/
 rm paysim1.zip
 ```
 
-### 3. Download OFAC Sanctions Lists
+### 3. Download OFAC Sanctions Lists (Optional)
+
+> **Note**: Pre-processed OFAC data is already available in `processed/sanctions_names.csv`. Only download raw files if you need to regenerate or customize the processing.
 
 **Note**: OFAC has updated their download system. Automated curl downloads are no longer supported.
 
@@ -132,6 +159,7 @@ mv ~/Downloads/cons_comments.csv ofac/consolidated/
 ## Important Notes
 
 > [!CAUTION]
+>
 > **IEEE-CIS Dataset Compliance**
 >
 > - **Do NOT redistribute** IEEE-CIS raw data (violates license)
@@ -141,13 +169,26 @@ mv ~/Downloads/cons_comments.csv ofac/consolidated/
 > - **Only for** academic research and education
 > - Trained models may be shared for research/educational purposes with proper attribution
 
-**All datasets excluded via `.gitignore`:**
+**Raw datasets excluded via `.gitignore`:**
+
 - Large files bloat repository size
-- IEEE-CIS has strict redistribution restrictions
-- PaySim and OFAC are open but still shouldn't bloat repo
+- IEEE-CIS has strict redistribution restrictions (cannot be shared)
+- PaySim and OFAC raw files are large but publicly available
+- Processed derivatives (in `processed/`) are committed for convenience
 
 **Reproducibility**
 
-- All datasets are publicly available
-- Download instructions provided above
-- Processed/cleaned data schemas documented in notebooks
+- All raw datasets are publicly available via the download instructions above
+- Processed OFAC data is committed to the repository (`processed/` directory)
+- Dataset exploration metadata included for transparency
+- Data schemas and processing pipelines documented in notebooks
+
+## Data Inventory
+
+| Dataset              | Status            | Size   | Committed                | License             |
+| -------------------- | ----------------- | ------ | ------------------------ | ------------------- |
+| IEEE-CIS raw         | Download required | ~500MB | No (license restriction) | Non-commercial only |
+| PaySim raw           | Download required | ~470MB | No (large file)          | Open data           |
+| OFAC raw             | Optional          | ~10MB  | No (large file)          | Public domain       |
+| OFAC processed       | Included          | ~2.1MB | Yes                      | Public domain       |
+| Exploration metadata | Included          | <1KB   | Yes                      | N/A                 |
