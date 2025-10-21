@@ -6,11 +6,11 @@ This roadmap outlines the phases, tasks, and success criteria for building this 
 
 **Status Legend:** 🟢 Complete | 🟡 In Progress | ⚪ Not Started
 
-Last Updated: 2025-10-02
+Last Updated: 2025-10-21
 
 ## Phase 1: Data Preparation & Exploration
 
-**Status:** 🟡 In Progress
+**Status:** 🟢 Complete
 
 ### Tasks
 
@@ -21,21 +21,21 @@ Last Updated: 2025-10-02
 - [x] Perform initial EDA on IEEE-CIS train data
 - [x] Analyze PaySim dataset
 - [x] Analyze OFAC sanctions lists (SDN + Consolidated)
-- [ ] Define missing value handling strategy (>90% missing columns)
-- [ ] Engineer fraud detection features:
-  - [ ] Velocity counters (transactions per user 1h/24h)
-  - [ ] Device reuse patterns
-  - [ ] BIN-IP mismatch detection
-  - [ ] Amount z-scores per merchant
-- [ ] Merge and prepare final training dataset
-- [ ] Save processed features to disk
+- [x] Define missing value handling strategy (>90% missing columns)
+- [x] Engineer fraud detection features:
+  - [x] Velocity counters (transactions per user 1h/24h)
+  - [x] Device reuse patterns
+  - [x] BIN-IP mismatch detection
+  - [x] Amount z-scores per merchant
+- [x] Merge and prepare final training dataset
+- [x] Save processed features to disk
 
 **Success Criteria:**
 
-- [ ] All datasets loaded and validated
-- [ ] Data quality issues documented
-- [ ] Feature engineering complete
-- [ ] Clean dataset ready for model training
+- [x] All datasets loaded and validated
+- [x] Data quality issues documented
+- [x] Feature engineering complete
+- [x] Clean dataset ready for model training
 
 **Key Findings:**
 
@@ -51,6 +51,15 @@ Last Updated: 2025-10-02
 - **Compliance Integration**: OFAC sanctions data (39,350 entities) preprocessed and ready for fuzzy matching pipeline integration
 - **Modeling Strategy**: Side-by-side metrics reveal algorithm choice and tuning must account for different imbalance ratios and feature availability
 - **Deployment Planning**: Conditional logic implemented to handle missing/unloaded datasets gracefully during analysis
+
+**Feature Engineering Insights:**
+
+- **Missing Value Strategy**: Dropped 12 columns (3% of features) with >90% missing values; imputed remaining using median (numeric) and mode (categorical) strategies, achieving 0 missing values in final dataset
+- **Single-Transaction Edge Case**: 3,444 cards (0.58%) appeared only once in dataset, causing NaN in standard deviation calculations; resolved by filling with 0 (semantically correct: no variation for single transactions)
+- **Feature Density**: Engineered 10 high-value features (time-based, velocity, device reuse, amount statistics) increasing feature count from 422 to 432 while reducing memory footprint from 66MB to 59MB through optimized data types
+- **Velocity Computation**: Card-level velocity features (1h/24h windows) are computationally expensive on 590K transactions; consider pre-computation or sampling strategies for larger datasets or real-time inference
+- **Data Quality Validation**: Post-processing validation critical, automated checks caught missing values in engineered features before model training, preventing downstream failures
+- **Production Considerations**: Device and card aggregation features require maintaining state in production; velocity features need Redis/cache layer; amount statistics benefit from periodic recomputation as new transactions arrive
 
 ## Phase 2: Fraud Model Training
 
