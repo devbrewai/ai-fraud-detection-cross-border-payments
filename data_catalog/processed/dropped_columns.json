@@ -1,0 +1,20 @@
+{
+  "dropped_date": "2025-10-21T09:53:31.102446",
+  "threshold": 90.0,
+  "count": 12,
+  "columns": [
+    "id_24",
+    "id_25",
+    "id_07",
+    "id_08",
+    "id_21",
+    "id_26",
+    "id_27",
+    "id_23",
+    "id_22",
+    "dist2",
+    "D7",
+    "id_18"
+  ],
+  "reason": ">90% missing values"
+}
