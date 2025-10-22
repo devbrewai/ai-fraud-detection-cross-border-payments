@@ -6,7 +6,7 @@ This roadmap outlines the phases, tasks, and success criteria for building this 
 
 **Status Legend:** 🟢 Complete | 🟡 In Progress | ⚪ Not Started
 
-Last Updated: 2025-10-21
+Last Updated: 2025-10-22
 
 ## Phase 1: Data Preparation & Exploration
 
@@ -63,7 +63,7 @@ Last Updated: 2025-10-21
 
 ## Phase 2: Fraud Model Training
 
-**Status:** ⚪ Not Started
+**Status:** 🟡 In Progress
 
 ### Tasks
 
