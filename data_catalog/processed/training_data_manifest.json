@@ -1,0 +1,32 @@
+{
+    "generated_at": "2025-10-23T07:48:34.547179",
+    "source_file": "/Users/joekariuki/Documents/Research/Projects/devbrew-payments-fraud-sanctions/data_catalog/processed/train_features.parquet",
+    "source_hash_sha256": "2a21f1c479a8773903c07159c5f55dd3024489e2eb0a583d1e8397b23082c8a2",
+    "rows": 590540,
+    "columns": 432,
+    "memory_gb": 2.040906372,
+    "dtypes_summary": {
+        "float64": 394,
+        "object": 29,
+        "int64": 9
+    },
+    "null_values_total": 0,
+    "columns_with_nulls": [],
+    "target": "isFraud",
+    "target_distribution": {
+        "0": 569877,
+        "1": 20663
+    },
+    "target_rate": 0.03499000914417313,
+    "has_transactiondt": true,
+    "has_transactionid": true,
+    "random_state": 42,
+    "feature_engineering_metadata": {
+        "total_features_expected": 432,
+        "dataset_shape_expected": [
+            590540,
+            432
+        ],
+        "engineering_date": "2025-10-21T10:56:32.922581"
+    }
+}
