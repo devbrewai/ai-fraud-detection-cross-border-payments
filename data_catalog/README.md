@@ -48,26 +48,35 @@ This directory contains datasets used for the fraud detection and sanctions scre
 ### 4. Processed Data (Included in Repository)
 
 - **Location**: `processed/`
-- **Description**: Pre-processed datasets and metadata included in the repository for convenience
+- **Description**: Pre-processed datasets, model artifacts, and metadata included in the repository for convenience
 - **Files**:
-  - `sanctions_names.csv` / `sanctions_names.parquet` - Processed OFAC sanctions names (~39K entities)
-  - `sanctions_names_summary.json` - Statistics on sanctions data coverage
-  - `exploration_metadata.json` - Dataset overview and quality metrics
-- **Note**: These files are derived from public domain OFAC data and contain no proprietary information
+  - **OFAC Sanctions Data**:
+    - `sanctions_names.csv` / `sanctions_names.parquet` - Processed OFAC sanctions names (~39K entities)
+    - `sanctions_names_summary.json` - Statistics on sanctions data coverage
+  - **Processing Metadata**:
+    - `exploration_metadata.json` - Dataset overview and quality metrics
+- **Note**: These files are derived from public domain OFAC data and are licensed under Apache 2.0 (see project LICENSE file)
 
 ## Quick Start
 
-**Option A: Use Processed Data (Fastest)**
+**Option A: Use Available Processed Data**
 
-The `processed/` directory contains pre-processed OFAC sanctions data ready to use. This is sufficient for:
+The `processed/` directory contains:
 
-- Sanctions screening module development
-- Testing fuzzy matching algorithms
-- Initial prototyping
+- **Sanctions Screening**: Processed OFAC sanctions names for fuzzy matching
+- **Exploration Metadata**: Dataset overview and quality metrics
 
-**Option B: Download Full Raw Datasets**
+**Option B: Download and Process Raw Datasets**
 
-For fraud model training and full EDA, download the raw datasets following the instructions below.
+For fraud detection model training, you'll need to:
+
+1. Download the IEEE-CIS fraud detection dataset (see instructions below)
+2. Run the notebooks to generate processed data locally:
+   - `01_data_exploration.ipynb` - Initial EDA and data quality analysis
+   - `02_feature_engineering.ipynb` - Feature engineering pipeline
+   - `03_model_training.ipynb` - Model training with temporal splits
+
+**Note**: IEEE-CIS processed data cannot be redistributed due to Kaggle competition rules. Users must download and process the raw data themselves.
 
 ## Setup Instructions
 
@@ -179,16 +188,19 @@ mv ~/Downloads/cons_comments.csv ofac/consolidated/
 **Reproducibility**
 
 - All raw datasets are publicly available via the download instructions above
-- Processed OFAC data is committed to the repository (`processed/` directory)
-- Dataset exploration metadata included for transparency
-- Data schemas and processing pipelines documented in notebooks
+- Processed datasets and model artifacts are committed to the repository (`processed/` directory)
+- Complete feature engineering pipeline documented with metadata
+- Temporal data splits with drift analysis included
+- Feature registry provides complete model training contract
 
 ## Data Inventory
 
-| Dataset              | Status            | Size   | Committed                | License             |
-| -------------------- | ----------------- | ------ | ------------------------ | ------------------- |
-| IEEE-CIS raw         | Download required | ~500MB | No (license restriction) | Non-commercial only |
-| PaySim raw           | Download required | ~470MB | No (large file)          | Open data           |
-| OFAC raw             | Optional          | ~10MB  | No (large file)          | Public domain       |
-| OFAC processed       | Included          | ~2.1MB | Yes                      | Public domain       |
-| Exploration metadata | Included          | <1KB   | Yes                      | N/A                 |
+| Dataset                    | Status            | Size   | Committed                | License             |
+| -------------------------- | ----------------- | ------ | ------------------------ | ------------------- |
+| IEEE-CIS raw              | Download required | ~500MB | No (license restriction) | Non-commercial only |
+| PaySim raw                | Download required | ~470MB | No (large file)          | Open data           |
+| OFAC raw                  | Optional          | ~10MB  | No (large file)          | Public domain       |
+| **Processed Datasets**    |                   |        |                          |                     |
+| OFAC processed            | Included          | ~2.1MB | Yes                      | Apache 2.0          |
+| Exploration metadata      | Included          | <1KB   | Yes                      | Apache 2.0          |
+| IEEE-CIS processed        | Generate locally  | ~380MB | No (license restriction) | Non-commercial only |
