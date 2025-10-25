@@ -1,0 +1,20 @@
+{
+    "strategy": "class_weights",
+    "method": "lightgbm_is_unbalance",
+    "scale_pos_weight_train": 28.556556556556558,
+    "imbalance_ratios": {
+        "train": 28.556556556556558,
+        "val": 24.614400346996312,
+        "test": 28.062007874015748
+    },
+    "fraud_counts": {
+        "train": 11988,
+        "val": 4611,
+        "test": 4064
+    },
+    "fraud_rates": {
+        "train": 0.03383344057980831,
+        "val": 0.03904053916754157,
+        "test": 0.034409184813899145
+    }
+}
