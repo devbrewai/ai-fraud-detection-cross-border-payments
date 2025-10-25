@@ -68,7 +68,7 @@ Last Updated: 2025-10-22
 ### Tasks
 
 - [x] Split data (train/validation/test)
-- [ ] Handle class imbalance (SMOTE/undersampling)
+- [x] Handle class imbalance (class weights)
 - [ ] Train baseline model (LightGBM/XGBoost)
 - [ ] Hyperparameter tuning
 - [ ] Evaluate model performance:
