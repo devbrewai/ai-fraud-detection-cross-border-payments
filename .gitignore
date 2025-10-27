@@ -206,6 +206,9 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
+# macOS
+.DS_Store
+
 # Data files
 # Exclude raw datasets (IEEE-CIS cannot be redistributed per Kaggle rules)
 data_catalog/ieee-fraud/*.csv
