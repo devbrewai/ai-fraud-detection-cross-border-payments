@@ -71,21 +71,21 @@ Last Updated: 2025-10-25
 - [x] Handle class imbalance (class weights)
 - [x] Train baseline model (LightGBM/XGBoost)
 - [ ] Hyperparameter tuning
-- [ ] Evaluate model performance:
-  - [ ] ROC-AUC ≥ 0.85 (target)
-  - [ ] PR-AUC
+- [x] Evaluate model performance:
+  - [x] ROC-AUC ≥ 0.85 (target)
+  - [x] PR-AUC
   - [ ] Confusion matrix
-  - [ ] Feature importance analysis
+  - [x] Feature importance analysis
 - [ ] Calibrate probabilities (isotonic regression)
 - [ ] Implement SHAP explainability
-- [ ] Save model artifacts
+- [x] Save model artifacts
 - [ ] Document model performance and limitations
 
 **Success Criteria:**
 
-- [ ] ROC-AUC ≥ 0.85 on test set
+- [x] ROC-AUC ≥ 0.85 on test set
 - [ ] Model explainability implemented
-- [ ] Model artifacts saved and versioned
+- [x] Model artifacts saved and versioned
 
 **Key Findings:**
 
@@ -93,8 +93,11 @@ Last Updated: 2025-10-25
 - **Temporal Drift Impact**: PR-AUC shows significant degradation from train (0.7673) to test (0.4743), attributed to documented temporal drift in fraud patterns (0.52pp fraud rate shift) and conservative baseline hyperparameters
 - **Class Imbalance Handling**: is_unbalance parameter with 28.56x positive class weighting effectively addresses 1:29 fraud-legitimate imbalance, though PR-AUC performance indicates room for improvement through hyperparameter tuning
 - **Model Generalization**: Train-validation gap of 5.59% indicates acceptable overfitting levels for baseline; test PR-AUC (0.4743) remains 13.9x better than random classifier (0.0344), validating pipeline correctness
+- **Feature Importance Concentration**: Top 20 features (4.7% of feature set) explain 73.4% of model importance; 315 features (73.4%) needed for 90% importance coverage, indicating significant feature redundancy and opportunity for dimensionality reduction
+- **V-Feature Dominance**: Anonymous V-features (V257, V258, V294, V283, V317) dominate top-10 importance, suggesting IEEE-CIS engineered features capture critical fraud signals; transaction amount (TransactionAmt) ranks as top interpretable feature
 - **Production Readiness**: Baseline establishes reference point for hyperparameter tuning; PR-AUC improvement is primary optimization target while maintaining ROC-AUC performance and monitoring for overfitting
 - **Categorical Feature Handling**: Successfully converted and trained on 29 high-cardinality categorical features (email domains, device info, card identifiers) - critical fraud signals that triggered expected LightGBM warnings for bins exceeding max_bin threshold
+- **Model Artifacts**: Comprehensive metadata structure with 13 sections (compliance, explainability, limitations, monitoring) demonstrates production-grade MLOps practices; model size 1.18 MB enables low-latency inference
 
 ## Phase 3: Sanctions Screening Module
 
