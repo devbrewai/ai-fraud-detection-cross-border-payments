@@ -1,0 +1,97 @@
+{
+    "evaluation_id": "eval-baseline-20251030-162622",
+    "evaluation_date": "2025-10-30T16:26:22.450130",
+    "model_version": "fraud_baseline_v1",
+    "evaluator": "Devbrew",
+    "dataset_version": "ieee-cis-2019",
+    "test_set_info": {
+        "total_transactions": 118108,
+        "fraud_transactions": 4064,
+        "legitimate_transactions": 114044,
+        "fraud_rate": 0.034409184813899145,
+        "imbalance_ratio": 28.062007874015748
+    },
+    "threshold_independent_metrics": {
+        "roc_auc": 0.886108327404784,
+        "pr_auc": 0.4743320191557926,
+        "roc_improvement_over_random": 0.38610832740478396,
+        "pr_improvement_over_random": 0.43992283434189344,
+        "interpretation": {
+            "roc_auc": "Probability that model ranks random fraud transaction higher than random legitimate transaction",
+            "pr_auc": "Average precision across all recall levels; more informative than ROC-AUC for imbalanced data"
+        }
+    },
+    "threshold_dependent_metrics": {
+        "cost_optimal": {
+            "threshold": 0.42046092184368744,
+            "precision": 0.1885245901639344,
+            "recall": 0.7074311023622047,
+            "f1_score": 0.2977115046080563,
+            "confusion_matrix": {
+                "true_negative": 101669,
+                "false_positive": 12375,
+                "false_negative": 1189,
+                "true_positive": 2875
+            },
+            "business_metrics": {
+                "flagged_rate": 0.12911911132184103,
+                "total_cost_usd": 180775.0,
+                "avg_cost_per_txn_usd": 1.5305906458495615,
+                "cost_savings_vs_no_model_usd": 225625.0,
+                "cost_reduction_percentage": 0.555179625984252
+            }
+        },
+        "optimal_f1": {
+            "threshold": 0.8440361962000291,
+            "precision": 0.6480820695807314,
+            "recall": 0.3575295275590551,
+            "f1_score": 0.4608309546005425
+        },
+        "fraud_rate_aligned": {
+            "threshold": 0.034409184813899145,
+            "precision": 0.04075504075504076,
+            "recall": 0.9817913385826772,
+            "f1_score": 0.07826138124472864
+        }
+    },
+    "cost_assumptions": {
+        "false_positive_cost_usd": 5.0,
+        "false_negative_cost_usd": 100.0,
+        "cost_ratio_fn_to_fp": 20.0,
+        "note": "Adjust based on actual business costs; typical range for payment fraud is 1:10 to 1:50 (FP:FN)"
+    },
+    "success_criteria": {
+        "roc_auc_target": 0.85,
+        "roc_auc_achieved": 0.886108327404784,
+        "roc_auc_pass": true,
+        "pr_auc_target": 0.35,
+        "pr_auc_achieved": 0.4743320191557926,
+        "pr_auc_pass": true,
+        "overall_pass": true
+    },
+    "production_recommendations": {
+        "recommended_threshold": 0.42046092184368744,
+        "threshold_rationale": "Cost-optimal threshold minimizes expected business cost based on FP/FN cost assumptions",
+        "expected_review_rate": 0.12911911132184103,
+        "expected_fraud_capture_rate": 0.7074311023622047,
+        "expected_precision": 0.1885245901639344,
+        "monitoring_guidelines": {
+            "threshold_stability": "Monitor flagged rate; investigate if deviates >5% from expected",
+            "performance_drift": "Re-evaluate model quarterly or if ROC-AUC drops >3% from baseline",
+            "cost_calibration": "Review FP/FN cost assumptions with finance team quarterly",
+            "fraud_pattern_shifts": "Implement concept drift detection on feature distributions"
+        },
+        "alerting_thresholds": {
+            "flagged_rate_upper_bound": 0.13557506688793308,
+            "flagged_rate_lower_bound": 0.12266315575574897,
+            "min_acceptable_roc_auc": 0.82,
+            "min_acceptable_recall": 0.6366879921259843
+        }
+    },
+    "evaluation_artifacts": {
+        "confusion_matrices": "/Users/joekariuki/Documents/Devbrew/research/devbrew-payments-fraud-sanctions/data_catalog/processed/confusion_matrices_baseline.png",
+        "cost_optimization": "/Users/joekariuki/Documents/Devbrew/research/devbrew-payments-fraud-sanctions/data_catalog/processed/cost_sensitive_threshold_baseline.png",
+        "precision_recall_curves": "/Users/joekariuki/Documents/Devbrew/research/devbrew-payments-fraud-sanctions/data_catalog/processed/precision_recall_threshold_baseline.png",
+        "evaluation_summary": "fraud_baseline_v1_evaluation.json"
+    }
+}
