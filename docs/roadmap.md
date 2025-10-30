@@ -6,7 +6,7 @@ This roadmap outlines the phases, tasks, and success criteria for building this 
 
 **Status Legend:** 🟢 Complete | 🟡 In Progress | ⚪ Not Started
 
-Last Updated: 2025-10-25
+Last Updated: 2025-10-30
 
 ## Phase 1: Data Preparation & Exploration
 
@@ -70,22 +70,27 @@ Last Updated: 2025-10-25
 - [x] Split data (train/validation/test)
 - [x] Handle class imbalance (class weights)
 - [x] Train baseline model (LightGBM/XGBoost)
-- [ ] Hyperparameter tuning
+- [ ] Hyperparameter tuning (Step 7)
 - [x] Evaluate model performance:
   - [x] ROC-AUC ≥ 0.85 (target)
-  - [x] PR-AUC
-  - [ ] Confusion matrix
+  - [x] PR-AUC ≥ 0.35 (target)
+  - [x] Confusion matrix analysis (3 thresholds)
+  - [x] Precision-Recall-Threshold curves
+  - [x] Cost-sensitive threshold optimization
   - [x] Feature importance analysis
-- [ ] Calibrate probabilities (isotonic regression)
-- [ ] Implement SHAP explainability
-- [x] Save model artifacts
-- [ ] Document model performance and limitations
+  - [x] Comprehensive evaluation JSON
+- [ ] Calibrate probabilities (isotonic regression) (Step 8)
+- [ ] Implement SHAP explainability (Step 9)
+- [x] Save model artifacts (baseline + evaluation)
+- [x] Document model performance and limitations
 
 **Success Criteria:**
 
 - [x] ROC-AUC ≥ 0.85 on test set
+- [x] PR-AUC ≥ 0.35 on test set
 - [ ] Model explainability implemented
 - [x] Model artifacts saved and versioned
+- [x] Evaluation metrics documented
 
 **Key Findings:**
 
@@ -98,6 +103,12 @@ Last Updated: 2025-10-25
 - **Production Readiness**: Baseline establishes reference point for hyperparameter tuning; PR-AUC improvement is primary optimization target while maintaining ROC-AUC performance and monitoring for overfitting
 - **Categorical Feature Handling**: Successfully converted and trained on 29 high-cardinality categorical features (email domains, device info, card identifiers) - critical fraud signals that triggered expected LightGBM warnings for bins exceeding max_bin threshold
 - **Model Artifacts**: Comprehensive metadata structure with 13 sections (compliance, explainability, limitations, monitoring) demonstrates production-grade MLOps practices; model size 1.18 MB enables low-latency inference
+- **Comprehensive Evaluation (Step 6)**: Implemented production-grade evaluation with threshold-independent metrics (ROC-AUC: 0.8861, PR-AUC: 0.4743), confusion matrix analysis at 3 operationally relevant thresholds, and precision-recall curves across full probability spectrum
+- **Cost-Sensitive Optimization**: Business-aligned threshold optimization (FP cost: $5, FN cost: $100) identifies threshold 0.4205 achieving **$225,625 cost savings** (55.5% reduction) while maintaining 70.7% fraud capture at 12.9% review rate
+- **Multi-Threshold Analysis**: Evaluated 3 operating points - fraud-rate-aligned (98.2% recall, 4.1% precision), default 0.5 (55.7% recall, 17.6% precision), and optimal F1 0.8440 (35.8% recall, 64.8% precision) - demonstrating precision-recall trade-offs for stakeholder decision-making
+- **Production Deployment Readiness**: Comprehensive evaluation JSON includes monitoring guidelines (±5% flagged rate tolerance), alerting thresholds (min ROC-AUC: 0.82, min recall: 0.637), and quarterly re-evaluation triggers for temporal drift detection
+- **Evaluation Artifacts**: Generated 3 high-resolution visualizations (confusion matrices, cost optimization curves, precision-recall curves) and structured JSON metadata enabling MLOps integration, regulatory audits, and baseline-vs-tuned model comparison
+- **Business Value Quantification**: At cost-optimal threshold, model processes 12.9% of transactions (15,250 reviews) to catch 70.7% of fraud (2,875 cases), with expected cost per transaction reduced from $3.44 (no model) to $1.53 (with model)
 
 ## Phase 3: Sanctions Screening Module
 
@@ -189,13 +200,25 @@ Last Updated: 2025-10-25
 
 ## Overall Success Criteria
 
-- [ ] Fraud model ROC-AUC ≥ 0.85
+- [x] Fraud model ROC-AUC ≥ 0.85 (achieved 0.8861)
+- [x] Fraud model PR-AUC ≥ 0.35 (achieved 0.4743)
+- [x] Comprehensive model evaluation with business metrics
 - [ ] End-to-end latency ≤ 200ms p95
-- [ ] Clear documentation of methodology and limitations
-- [ ] Reproducible notebooks and code
+- [x] Clear documentation of methodology and limitations
+- [x] Reproducible notebooks and code
 - [ ] Working demo with all components integrated
-- [ ] IEEE-CIS license compliance verified
+- [x] IEEE-CIS license compliance verified
 
 ## Next Steps
 
-**Current Focus:** Phase 1 - Complete EDA on PaySim and OFAC datasets, then move to feature engineering.
+**Current Focus:** Phase 2 - Complete hyperparameter tuning (Step 7) to improve PR-AUC from baseline 0.4743 to ≥ 0.50, then proceed to probability calibration (Step 8) and model explainability (Step 9).
+
+**Recent Completion:** Step 6 (Model Evaluation) - Comprehensive evaluation with cost-sensitive optimization achieving $225,625 savings (55.5% reduction). All validation checks passed. Model ready for hyperparameter tuning.
+
+**Upcoming:**
+1. Phase 2: Model Trainings
+    - Hyperparameter Tuning (Optuna Bayesian optimization, 50-100 trials, target PR-AUC ≥ 0.50)
+    - Probability Calibration (Isotonic regression for reliable threshold selection)
+    - Model Explainability (SHAP values for regulatory compliance)
+2. Phase 3: Sanctions Screening Module
+3. Phase 4: API Service & Infrastructure
