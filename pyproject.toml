@@ -1,7 +1,7 @@
 [project]
 name = "devbrew-payments-fraud-sanctions"
 version = "0.1.0"
-description = "Production-grade fraud detection and sanctions screening for cross-border payments"
+description = "Production-grade AI fraud detection and sanctions screening for cross-border payments"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
@@ -45,7 +45,7 @@ dev = [
     "ipykernel>=6.28.0",
     "ipywidgets>=8.1.0",
     
-    # Data Exploration
+    # Data Exploration & Visualization
     "matplotlib>=3.8.0",
     "seaborn>=0.13.0",
     "plotly>=5.18.0",
