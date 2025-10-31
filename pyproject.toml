@@ -21,7 +21,10 @@ dependencies = [
     "scikit-learn>=1.4.0",
     "pandas>=2.1.0",
     "numpy>=1.26.0",
+    "scipy>=1.11.0",
     "shap>=0.44.0",
+    "optuna>=3.5.0",
+    "kaleido>=0.2.1",
     # Fuzzy Matching
     "rapidfuzz>=3.6.0",
     # Database & Cache
