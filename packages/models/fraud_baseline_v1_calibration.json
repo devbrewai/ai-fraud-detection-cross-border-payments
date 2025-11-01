@@ -1,6 +1,6 @@
 {
-  "calibration_id": "calibration_20251101_101004",
-  "timestamp": "2025-11-01T10:10:04.725806",
+  "calibration_id": "calibration_20251101_103930",
+  "timestamp": "2025-11-01T10:39:30.017613",
   "model_version": "fraud_baseline_v1",
   "calibration_method": "isotonic_regression",
   "calibration_set": "validation",
@@ -13,7 +13,11 @@
     "brier_uncalibrated": 0.06924731628064594,
     "brier_calibrated": 0.023698299482419742,
     "brier_improvement": 0.0455490167982262,
-    "brier_improvement_pct": 65.77730263744066
+    "brier_improvement_pct": 65.77730263744066,
+    "roc_auc_uncalibrated": 0.886108327404784,
+    "roc_auc_calibrated": 0.8862268991116014,
+    "roc_auc_difference": 0.00011857170681739415,
+    "roc_auc_preserved": true
   },
   "calibration_curve": [
     {
