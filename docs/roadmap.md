@@ -6,7 +6,7 @@ This roadmap outlines the phases, tasks, and success criteria for building this 
 
 **Status Legend:** 🟢 Complete | 🟡 In Progress | ⚪ Not Started
 
-Last Updated: 2025-10-30
+Last Updated: 2025-11-01
 
 ## Phase 1: Data Preparation & Exploration
 
@@ -70,7 +70,7 @@ Last Updated: 2025-10-30
 - [x] Split data (train/validation/test)
 - [x] Handle class imbalance (class weights)
 - [x] Train baseline model (LightGBM/XGBoost)
-- [ ] Hyperparameter tuning (Step 7)
+- [x] Hyperparameter tuning (Step 7) - Decision: Use baseline model
 - [x] Evaluate model performance:
   - [x] ROC-AUC ≥ 0.85 (target)
   - [x] PR-AUC ≥ 0.35 (target)
@@ -109,6 +109,13 @@ Last Updated: 2025-10-30
 - **Production Deployment Readiness**: Comprehensive evaluation JSON includes monitoring guidelines (±5% flagged rate tolerance), alerting thresholds (min ROC-AUC: 0.82, min recall: 0.637), and quarterly re-evaluation triggers for temporal drift detection
 - **Evaluation Artifacts**: Generated 3 high-resolution visualizations (confusion matrices, cost optimization curves, precision-recall curves) and structured JSON metadata enabling MLOps integration, regulatory audits, and baseline-vs-tuned model comparison
 - **Business Value Quantification**: At cost-optimal threshold, model processes 12.9% of transactions (15,250 reviews) to catch 70.7% of fraud (2,875 cases), with expected cost per transaction reduced from $3.44 (no model) to $1.53 (with model)
+- **Hyperparameter Tuning Investigation (Step 7)**: Optuna Bayesian optimization (50 trials) improved validation PR-AUC from 0.4743 to 0.4967 (+4.7%), but test PR-AUC decreased to 0.4705 (-0.8%) with bootstrap test confirming no significant improvement (p=0.27)
+- **Production-Grade Diagnostic Analysis**: Systematic 4-part diagnostic revealed tuned model would increase operational costs by $43,870 (+9.2%) despite validation improvements - demonstrates MLOps best practice of preventing costly deployment errors through pre-production validation
+- **Temporal Drift Detection**: Validation vs test set shows 13.46% fraud rate difference (3.90% vs 3.44%) and significant distribution drift in 9/10 top features (KS test p<0.05), indicating temporal concept drift as root cause of tuning failure
+- **Feature Importance Instability**: Tuned model shows correlation of only 0.76 with baseline feature importances (vs 0.97 prediction correlation), indicating overfitting to validation-specific patterns rather than generalizable fraud signals - major importance shifts in V258 (11%→4%), V70 (2%→6%), and C1 (2%→5%)
+- **Business Impact Analysis**: Tuned model caught +36 additional fraud cases but added +9,944 false positives, demonstrating precision collapse (4.1%→3.9%) and recall-precision trade-off unsuitable for production deployment
+- **Model Selection Decision**: Baseline model selected for production based on: (1) exceeds all success criteria (ROC-AUC: 0.8861 > 0.85, PR-AUC: 0.4743 > 0.35), (2) superior business economics (-$43,870 cost advantage), (3) temporally stable feature reliance, (4) diagnostic analysis validates decision framework for target audience (fintech startups, financial institutions)
+- **Case Study Value**: Hyperparameter tuning "failure" demonstrates production ML rigor - knowing when NOT to deploy is as valuable as optimization success; systematic diagnostics prevented $44K/test-period cost increase, showcasing decision-making framework applicable to payments industry ML operations
 
 ## Phase 3: Sanctions Screening Module
 
@@ -211,14 +218,16 @@ Last Updated: 2025-10-30
 
 ## Next Steps
 
-**Current Focus:** Phase 2 - Complete hyperparameter tuning (Step 7) to improve PR-AUC from baseline 0.4743 to ≥ 0.50, then proceed to probability calibration (Step 8) and model explainability (Step 9).
+**Current Focus:** Phase 2 - Complete model training phase with probability calibration and SHAP explainability, then proceed to Sanctions Screening Module (Phase 3).
 
-**Recent Completion:** Step 6 (Model Evaluation) - Comprehensive evaluation with cost-sensitive optimization achieving $225,625 savings (55.5% reduction). All validation checks passed. Model ready for hyperparameter tuning.
+**Recent Completion:** Hyperparameter Tuning - Systematic diagnostic analysis led to production-ready decision to use baseline model, preventing $43,870 cost increase. Demonstrates MLOps best practices for target audience.
 
-**Upcoming:**
-1. Phase 2: Model Trainings
-    - Hyperparameter Tuning (Optuna Bayesian optimization, 50-100 trials, target PR-AUC ≥ 0.50)
-    - Probability Calibration (Isotonic regression for reliable threshold selection)
-    - Model Explainability (SHAP values for regulatory compliance)
-2. Phase 3: Sanctions Screening Module
-3. Phase 4: API Service & Infrastructure
+**Immediate Actions:**
+1. Phase 2: Complete Model Training
+    - Probability Calibration (Isotonic regression, ~2-3 hours)
+    - Model Explainability (SHAP values, ~2-3 hours)
+    - Final model artifacts and documentation
+2. Phase 3: Sanctions Screening Module (~4-6 hours)
+3. Phase 4: API Service & Infrastructure (~8-12 hours)
+4. Phase 5: Demo UI (~6-8 hours)
+5. Phase 6: Final Documentation (~3-4 hours)
