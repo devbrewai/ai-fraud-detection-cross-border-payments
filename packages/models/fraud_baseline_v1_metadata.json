@@ -1,10 +1,10 @@
 {
-    "model_id": "fraud-baseline-20251031-095930",
+    "model_id": "fraud-baseline-20251101-051708",
     "model_version": "baseline_v1.0",
     "model_type": "LightGBM",
     "model_owner": "Devbrew",
     "model_contact": "hello@devbrew.ai",
-    "training_date": "2025-10-31T09:59:30.463568",
+    "training_date": "2025-11-01T05:17:08.124955",
     "framework_version": "4.6.0",
     "random_state": 42,
     "hyperparameters": {
@@ -25,7 +25,7 @@
         "num_boost_round": 1000,
         "early_stopping_rounds": 50,
         "best_iteration": 295,
-        "training_duration_seconds": 8.55
+        "training_duration_seconds": 8.23
     },
     "performance_metrics": {
         "train": {
@@ -43,7 +43,7 @@
             "pr_auc": 0.4743320191557926,
             "samples": 118108
         },
-        "evaluation_date": "2025-10-31T09:59:30.463595",
+        "evaluation_date": "2025-11-01T05:17:08.124972",
         "train_val_gap": 0.055892748369962386
     },
     "data_info": {
