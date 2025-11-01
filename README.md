@@ -54,7 +54,9 @@ ai-fraud-detection-cross-border-payments/
   │   ├── models/        # trained artifacts, ONNX exports
   │   └── shared/        # schemas, utils
   ├── data_catalog/      # dataset download scripts + notes
-  ├── docs/              # PRD, one-pagers, ROI, architecture
+  ├── docs/
+  │   ├── findings/      # phase-by-phase technical findings
+  │   └── ...            # roadmap, requirements
   └── notebooks/         # EDA + model training
 ```
 
@@ -114,9 +116,17 @@ npm run dev
 
 ## Documentation
 
+### Project Planning
 - [Research Requirements](./docs/research-requirements.md) — detailed case study specifications
 - [Roadmap](./docs/roadmap.md) — project phases and success criteria
-- Case Study Summary: _planned_ (pending results validation)
+
+### Technical Findings
+- [Phase 1: Data Exploration](./docs/findings/phase-1-data-exploration.md) — dataset analysis, feature engineering insights
+- [Phase 2: Model Training](./docs/findings/phase-2-model-training.md) — performance metrics, cost optimization, hyperparameter tuning
+- [Phase 3: Sanctions Screening](./docs/findings/phase-3-sanctions-screening.md) — _planned_
+
+### Results
+- [Case Study Summary]: _planned_ (pending final results validation)
 
 ## Disclaimer
 
