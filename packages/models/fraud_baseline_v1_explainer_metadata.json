@@ -1,0 +1,128 @@
+{
+  "explainer_id": "explainer_20251103_095749",
+  "timestamp": "2025-11-03T09:57:49.211468",
+  "model_version": "fraud_baseline_v1",
+  "explainer_type": "TreeExplainer",
+  "sample_size": 10000,
+  "sample_fraud_rate": 0.0329,
+  "expected_value": -1.9125626269648768,
+  "feature_count": 429,
+  "top_20_features": [
+    {
+      "feature": "C13",
+      "importance": 0.22371634676211782,
+      "rank": 1
+    },
+    {
+      "feature": "P_emaildomain",
+      "importance": 0.20521636665794973,
+      "rank": 2
+    },
+    {
+      "feature": "card_amt_mean",
+      "importance": 0.19149436386794605,
+      "rank": 3
+    },
+    {
+      "feature": "TransactionAmt",
+      "importance": 0.18822646391019188,
+      "rank": 4
+    },
+    {
+      "feature": "C1",
+      "importance": 0.1421266699800976,
+      "rank": 5
+    },
+    {
+      "feature": "V70",
+      "importance": 0.13509259156376072,
+      "rank": 6
+    },
+    {
+      "feature": "card6",
+      "importance": 0.1305317106352864,
+      "rank": 7
+    },
+    {
+      "feature": "M4",
+      "importance": 0.12957931133911282,
+      "rank": 8
+    },
+    {
+      "feature": "C14",
+      "importance": 0.12547545674402674,
+      "rank": 9
+    },
+    {
+      "feature": "id_30",
+      "importance": 0.11331715252522692,
+      "rank": 10
+    },
+    {
+      "feature": "card1",
+      "importance": 0.10809976778053183,
+      "rank": 11
+    },
+    {
+      "feature": "D2",
+      "importance": 0.1068939605076097,
+      "rank": 12
+    },
+    {
+      "feature": "V91",
+      "importance": 0.09363257401115424,
+      "rank": 13
+    },
+    {
+      "feature": "V294",
+      "importance": 0.09089180615675192,
+      "rank": 14
+    },
+    {
+      "feature": "DeviceInfo",
+      "importance": 0.08700170911466273,
+      "rank": 15
+    },
+    {
+      "feature": "C5",
+      "importance": 0.08348713497993873,
+      "rank": 16
+    },
+    {
+      "feature": "M3",
+      "importance": 0.08305190904344734,
+      "rank": 17
+    },
+    {
+      "feature": "id_31",
+      "importance": 0.0813934988047814,
+      "rank": 18
+    },
+    {
+      "feature": "D15",
+      "importance": 0.08024036391073018,
+      "rank": 19
+    },
+    {
+      "feature": "card2",
+      "importance": 0.07963867626660223,
+      "rank": 20
+    }
+  ],
+  "validation_checks": {
+    "shap_values_shape": [
+      10000,
+      429
+    ],
+    "shap_value_range": [
+      -3.332689968195817,
+      2.425809823748907
+    ],
+    "expected_fraud_signals_present": true
+  },
+  "production_use_cases": [
+    "real_time_api_explanations",
+    "monitoring_dashboards",
+    "regulatory_audit_documentation"
+  ]
+}
