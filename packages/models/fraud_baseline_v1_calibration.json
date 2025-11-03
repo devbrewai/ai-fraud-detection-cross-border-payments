@@ -1,6 +1,6 @@
 {
-  "calibration_id": "calibration_20251101_103930",
-  "timestamp": "2025-11-01T10:39:30.017613",
+  "calibration_id": "calibration_20251103_084627",
+  "timestamp": "2025-11-03T08:46:27.194802",
   "model_version": "fraud_baseline_v1",
   "calibration_method": "isotonic_regression",
   "calibration_set": "validation",
