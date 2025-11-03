@@ -8,7 +8,7 @@ This roadmap outlines the phases, tasks, and success criteria for building this 
 
 **Documentation Structure:** This roadmap tracks project status only. For detailed technical findings, performance metrics, and design decisions, see the [findings/](findings/) directory.
 
-Last Updated: 2025-11-01
+Last Updated: 2025-11-03 (Phase 2 Complete)
 
 ## Phase 1: Data Preparation & Exploration
 
@@ -50,7 +50,7 @@ Last Updated: 2025-11-01
 
 ## Phase 2: Fraud Model Training
 
-**Status:** 🟡 In Progress
+**Status:** 🟢 Complete
 
 ### Tasks
 
@@ -67,8 +67,8 @@ Last Updated: 2025-11-01
   - [x] Feature importance analysis
   - [x] Comprehensive evaluation JSON
 - [x] Calibrate probabilities (isotonic regression)
-- [ ] Implement SHAP explainability
-- [x] Save model artifacts (baseline + evaluation + calibration)
+- [x] Implement SHAP explainability
+- [x] Save model artifacts (baseline + evaluation + calibration + explainability)
 - [x] Document model performance and limitations
 
 **Success Criteria:**
@@ -87,8 +87,9 @@ Last Updated: 2025-11-01
 - [x] Hyperparameter tuning analysis (baseline selected via systematic diagnostics)
 - [x] Model metadata with 13-section structure (MLOps-ready)
 - [x] Probability calibration (isotonic regression, ECE=0.0050, 96.8% improvement)
+- [x] SHAP explainability (TreeExplainer, 10K sample, <10ms inference overhead)
 
-**Detailed Findings:** See [Phase 2 Findings](findings/phase-2-model-training.md) for performance metrics, cost analysis, hyperparameter tuning investigation, probability calibration results, and model selection rationale.
+**Detailed Findings:** See [Phase 2 Findings](findings/phase-2-model-training.md) for performance metrics, cost analysis, hyperparameter tuning investigation, probability calibration results, SHAP explainability analysis, and model selection rationale.
 
 ## Phase 3: Sanctions Screening Module
 
@@ -192,19 +193,20 @@ Last Updated: 2025-11-01
 
 ## Next Steps
 
-**Current Focus:** Phase 2 completion and Phase 3 preparation.
+**Current Focus:** Phase 3 (Sanctions Screening Module) preparation.
 
 **Recent Completion:** 
 - Hyperparameter tuning investigation (baseline model selected via systematic diagnostics)
 - Probability calibration (isotonic regression, ECE=0.0050, 96.8% improvement)
-- Documentation refactoring (findings separated from roadmap tracking)
+- SHAP explainability (TreeExplainer, top features validated, production-ready artifacts)
+- Phase 2 complete with all artifacts generated
 
 **Immediate Actions:**
 
-1. **Phase 2 Final Steps** (~2-4 hours)
-   - [ ] Commit calibration work
-   - [ ] Optional: SHAP explainability (if required for demo)
-   - [ ] Final model documentation
+1. **Phase 2 Final Steps** (COMPLETE ✓)
+   - [x] Commit calibration work
+   - [x] SHAP explainability implemented
+   - [x] Final model documentation complete
 
 2. **Phase 3: Sanctions Screening** (~4-6 hours)
    - [ ] OFAC fuzzy matching implementation
