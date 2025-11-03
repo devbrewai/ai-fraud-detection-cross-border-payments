@@ -1,7 +1,7 @@
 # Phase 2: Model Training & Evaluation Findings
 
-**Status:** In Progress (Explainability Pending)  
-**Last Updated:** 2025-11-01
+**Status:** Complete  
+**Last Updated:** 2025-11-03
 
 ## Overview
 
@@ -20,8 +20,8 @@ This document captures all technical findings, performance metrics, and design d
 
 | Metric | Train | Validation | Test | Target | Status |
 |--------|-------|------------|------|--------|--------|
-| **ROC-AUC** | 0.9420 | 0.8861 | 0.8861 | ≥0.85 | ✓ **Exceeds** |
-| **PR-AUC** | 0.7673 | 0.4743 | 0.4743 | ≥0.35 | ✓ **Exceeds** |
+| **ROC-AUC** | 0.9420 | 0.8861 | 0.8861 | ≥0.85 | **Exceeds** |
+| **PR-AUC** | 0.7673 | 0.4743 | 0.4743 | ≥0.35 | **Exceeds** |
 | **Log Loss** | 0.1124 | 0.1402 | 0.1402 | N/A | - |
 
 **Key Observations:**
@@ -110,7 +110,7 @@ This document captures all technical findings, performance metrics, and design d
 - **False Negative Cost:** $100 (average fraud loss)
 - **Cost Ratio:** 1:20 (FP:FN)
 
-**Validation:** Cost ratio aligns with industry benchmarks (Stripe, PayPal operations research)
+**Validation:** Cost ratio aligns with industry benchmarks
 
 ### Optimal Threshold: 0.4205
 
@@ -193,7 +193,7 @@ This document captures all technical findings, performance metrics, and design d
 2. Explainability (SHAP) should focus on top 20 features for user interpretability
 3. Feature store can optimize for top-100 feature computation latency
 
-## Comprehensive Model Evaluation (Step 6)
+## Comprehensive Model Evaluation
 
 ### Evaluation Artifacts Generated
 
@@ -237,7 +237,7 @@ This document captures all technical findings, performance metrics, and design d
 - Cost assumptions documented and validated against industry benchmarks
 - Feature importance rankings available for model interpretability requests
 
-## Hyperparameter Tuning Investigation (Step 7)
+## Hyperparameter Tuning Investigation
 
 ### Motivation
 
@@ -282,7 +282,7 @@ reg_lambda: 1.87
 | Val ROC-AUC | 0.8861 | 0.8877 | +0.16% | Negligible |
 | Val PR-AUC | 0.4743 | 0.4967 | **+4.7%** | Promising |
 | Test ROC-AUC | 0.8861 | 0.8825 | -0.36% | Slight degradation |
-| Test PR-AUC | 0.4743 | 0.4705 | **-0.8%** | ✗ Worse |
+| Test PR-AUC | 0.4743 | 0.4705 | **-0.8%** | Worse |
 
 **Bootstrap Significance Test:**
 - Null hypothesis: Tuned model = Baseline model on test PR-AUC
@@ -311,11 +311,11 @@ Systematic 4-part diagnostic revealed why tuned model would harm production depl
 
 | Feature | KS Statistic | P-Value | Drift Status |
 |---------|--------------|---------|--------------|
-| V257 | 0.089 | <0.001 | ✓ Significant |
-| V258 | 0.067 | <0.001 | ✓ Significant |
-| V294 | 0.123 | <0.001 | ✓ Significant |
-| TransactionAmt | 0.045 | <0.001 | ✓ Significant |
-| V283 | 0.078 | <0.001 | ✓ Significant |
+| V257 | 0.089 | <0.001 | Significant |
+| V258 | 0.067 | <0.001 | Significant |
+| V294 | 0.123 | <0.001 | Significant |
+| TransactionAmt | 0.045 | <0.001 | Significant |
+| V283 | 0.078 | <0.001 | Significant |
 
 **Fraud Rate Drift:**
 - Validation: 3.90%
@@ -397,9 +397,9 @@ Uncalibrated models may output scores that rank transactions correctly (high ROC
 
 | Metric | Uncalibrated | Calibrated | Improvement | Status |
 |--------|--------------|------------|-------------|--------|
-| **ECE** | 0.1551 | **0.0050** | **96.8%** | ✓ Exceeds target |
-| **Brier Score** | 0.0692 | 0.0237 | 65.8% | ✓ Better |
-| **ROC-AUC** | 0.8861 | 0.8862 | Δ=0.000119 | ✓ Preserved |
+| **ECE** | 0.1551 | **0.0050** | **96.8%** | Exceeds target |
+| **Brier Score** | 0.0692 | 0.0237 | 65.8% | Better |
+| **ROC-AUC** | 0.8861 | 0.8862 | Δ=0.000119 | Preserved |
 
 **ECE Target:** < 0.10 (achieved 0.0050, **50x better than threshold**)
 
@@ -435,7 +435,7 @@ Uncalibrated models may output scores that rank transactions correctly (high ROC
 
 | Metric | Uncalibrated | Calibrated | Difference | Preserved |
 |--------|--------------|------------|------------|-----------|
-| **ROC-AUC** | 0.8861 | 0.8862 | 0.000119 | ✓ Yes |
+| **ROC-AUC** | 0.8861 | 0.8862 | 0.000119 | Yes |
 
 **Interpretation:** Difference of 0.000119 (0.01%) confirms calibration preserved ranking performance as expected. The tiny improvement is due to floating-point precision, not actual ranking changes.
 
@@ -484,6 +484,159 @@ Uncalibrated models may output scores that rank transactions correctly (high ROC
 
 4. **Sparse High-Score Bins:** Bins 7-10 have 10-841 samples; calibration less stable for rare high-score predictions.
 
+## Model Explainability (SHAP)
+
+### Motivation
+
+Model explainability is critical for production fraud detection systems. Regulatory frameworks like GDPR Article 22 and FCRA Section 615 require the ability to explain why transactions were flagged. Operations teams need transparency to tune thresholds, debug false positives, and build stakeholder trust. Beyond compliance, explainability helps catch data bugs, guides feature engineering decisions, and enables customer service teams to communicate model reasoning to users.
+
+### SHAP Implementation
+
+**Framework:** SHAP (SHapley Additive exPlanations) with TreeExplainer
+
+**Methodology:**
+- TreeExplainer optimized for LightGBM (fast and exact explanations)
+- Computed on 10,000-transaction sample from test set (8.5% sample, 3.29% fraud rate)
+- Expected value (base prediction): -1.9126 (log-odds)
+
+**Computational Performance:**
+- SHAP value computation: ~15-20 seconds for 10K transactions
+- Production inference overhead: <10ms for top-5 features
+- Memory footprint: Explainer artifact 6.7 MB
+
+### Global Explainability Results
+
+**Top 10 Features by Mean |SHAP| Value:**
+
+| Rank | Feature | SHAP Importance | Category | Interpretation |
+|------|---------|----------------|----------|----------------|
+| 1 | C13 | 0.224 | Card behavior | Payment pattern consistency |
+| 2 | P_emaildomain | 0.205 | Email | Email reputation/history |
+| 3 | card_amt_mean | 0.191 | Engineered | Historical spending patterns |
+| 4 | TransactionAmt | 0.188 | Transaction | Amount anomaly detection |
+| 5 | C1 | 0.142 | Card behavior | Card-level fraud signals |
+| 6 | V70 | 0.135 | Anonymous | Vesta feature (undisclosed) |
+| 7 | card6 | 0.131 | Card attribute | Card type/category |
+| 8 | M4 | 0.130 | Match | Address/identity matching |
+| 9 | C14 | 0.125 | Card behavior | Behavioral consistency |
+| 10 | id_30 | 0.113 | Device | Device fingerprint patterns |
+
+**Domain Validation:**
+- Top features align with expected fraud signals (payment behavior, email reputation, spending patterns, device attributes)
+- Interpretable features (C13, TransactionAmt, card_amt_mean) dominate top ranks
+- No unexpected features indicating data leakage or pipeline bugs
+- SHAP importance correlates with LightGBM native feature importance (ρ=0.89)
+
+**Feature Category Distribution (Top 20):**
+- Card behavior features (C-features): 5 features (C13, C1, C14, C5, C11)
+- Engineered features: 3 features (card_amt_mean, card_amt_std, card_txn_count)
+- Transaction attributes: 2 features (TransactionAmt, card6, card1, card2)
+- Identity/device: 4 features (P_emaildomain, id_30, id_31, DeviceInfo)
+- Anonymous V-features: 6 features (V70, V91, V294, etc.)
+
+**Key Insights:**
+1. **Interpretability Balance:** 70% of top-20 features are interpretable (not anonymous V-features), enabling stakeholder communication
+2. **Engineered Feature Success:** Custom features (card_amt_mean, card_amt_std) rank in top-20, validating Phase 1 feature engineering
+3. **Device/Identity Signals:** Email domain and device fingerprinting contribute significantly to fraud detection
+4. **Stable Importance:** Top-10 features account for ~45% of total SHAP importance, indicating concentrated signal
+
+### Local Explainability Results
+
+**Three Representative Examples:**
+
+#### Example 1: High-Risk Fraud Transaction
+- **Predicted Probability:** 99.6% fraud
+- **Actual Label:** FRAUD
+- **Top Contributing Features:**
+  - V258 (+1.69 SHAP): Extreme value indicating suspicious pattern
+  - C1 (+1.08): Abnormal card behavior signature
+  - C14 (+1.00): Behavioral consistency violation
+  - V45 (+0.88): Additional anonymous fraud signal
+  - V87 (+0.55): Corroborating V-feature pattern
+
+**Interpretation:** Model correctly identified fraud based on multiple converging signals (behavioral anomalies, device patterns, transaction characteristics). High SHAP values indicate strong deviation from legitimate baseline patterns.
+
+#### Example 2: Medium-Risk Case (False Positive)
+- **Predicted Probability:** 61.0% fraud
+- **Actual Label:** Legitimate
+- **Top Contributing Features:**
+  - V294 (+0.40): Elevated anonymous feature
+  - V281 (+0.38): Supporting V-feature signal
+  - V309 (+0.29): Additional pattern indicator
+  - D2 (+0.27): Time-delta anomaly
+  - M4 (-0.17): Identity match (reduces fraud score)
+
+**Interpretation:** False positive driven by V-feature patterns that suggest fraud but are actually legitimate edge-case behavior. M4 (identity match) correctly pushes toward legitimate but is outweighed by V-features. This highlights the challenge of anonymous features in explainability and the need for manual review of medium-confidence predictions.
+
+#### Example 3: Low-Risk Legitimate Transaction
+- **Predicted Probability:** 8.6% legitimate
+- **Actual Label:** Legitimate
+- **Top Contributing Features:**
+  - C13 (-0.29): Normal payment behavior
+  - card1 (-0.27): Recognized card identifier
+  - D15 (-0.24): Normal time pattern
+  - C11 (+0.19): Minor behavioral flag
+  - card_amt_std (+0.19): Slightly elevated amount variability
+
+**Interpretation:** Model correctly identified legitimate transaction based on normal behavioral patterns (C13, C11), recognized card (card1), and typical time patterns (D15). Small positive contributions from amount variability indicate minor anomalies but insufficient to trigger fraud alert.
+
+### Production Use Cases
+
+**1. Real-Time API Explanations**
+- API endpoint returns: `{fraud_score, top_5_features, shap_values}`
+- Fraud analysts see top feature contributions alongside risk score
+- Manual review queue prioritized by SHAP confidence (high absolute values = clear decision)
+
+**2. Regulatory Compliance Documentation**
+- GDPR Article 22 "right to explanation" satisfied with SHAP waterfall charts
+- FCRA Section 615 adverse action notices: "Transaction flagged due to: (1) Unusual card behavior patterns (C13), (2) Unrecognized email domain (P_emaildomain), (3) Amount 3.2σ above account average (card_amt_mean)"
+- Audit trail: SHAP values archived for all flagged transactions
+
+**3. Monitoring & Drift Detection**
+- Feature importance correlation tracked over time (alert if ρ < 0.85)
+- SHAP distributions monitored for distribution shift
+- Unexpected feature importance spikes indicate data pipeline issues
+
+### Explainability Validation Checks
+
+**Domain Knowledge Alignment:**
+- Top features align with fraud detection domain expertise
+- No data leakage indicators (post-transaction features absent)
+- Feature importance consistent with LightGBM native importance
+
+**SHAP Mathematical Properties:**
+- SHAP values sum to prediction difference from baseline (verified on 100 samples)
+- Force plots show additive contributions correctly
+- Waterfall charts interpretable to non-technical stakeholders
+
+**Production Readiness:**
+- TreeExplainer fast enough for real-time inference (<10ms overhead)
+- Explainer artifact serialized and versioned (fraud_baseline_v1_explainer.pkl)
+- Top-20 feature list saved for API integration
+- Expected fraud signals present in top-10 features
+
+### Explainability Limitations
+
+1. **Anonymous V-Features:** 30% of top-20 importance comes from undisclosed Vesta features, limiting full transparency for stakeholders
+
+2. **Sample-Based Analysis:** SHAP values computed on 10K sample (8.5% of test set); full test set computation would take ~3 minutes
+
+3. **Mid-Confidence Ambiguity:** Medium-risk predictions (0.3-0.7) often driven by conflicting V-features, challenging to explain to users
+
+4. **Feature Interaction Complexity:** SHAP shows individual feature contributions but doesn't fully capture higher-order interactions between features
+
+### Explainability Artifacts
+
+**Generated Files:**
+1. **fraud_baseline_v1_explainer.pkl** - TreeExplainer object for production inference (6.7 MB)
+2. **fraud_baseline_v1_explainer_metadata.json** - Top-20 features, validation checks, expected value
+3. **SHAP visualizations** - Feature importance bar chart, beeswarm summary plot, force plots, waterfall charts (embedded in notebook)
+
+**MLOps Integration:**
+- Explainer can be loaded alongside model for production API
+- Feature importance rankings enable monitoring dashboard
+- SHAP values can be logged to data warehouse for audit trail
+
 ## Categorical Feature Handling
 
 ### High-Cardinality Features
@@ -495,7 +648,7 @@ Uncalibrated models may output scores that rank transactions correctly (high ROC
 
 **LightGBM Warnings (Expected):**
 ```
-Warning: categorical features have bins exceeding max_bin threshold
+[WARNING] Categorical features have bins exceeding max_bin threshold
 ```
 
 **Interpretation:** 
@@ -516,8 +669,8 @@ Warning: categorical features have bins exceeding max_bin threshold
 5. **Feature Importance:** Top-50 features with importance scores
 6. **Business Metrics:** Cost-optimal threshold, savings quantification
 7. **Threshold Analysis:** Multi-threshold confusion matrix results
-8. **Calibration:** Placeholder for isotonic regression (Step 8)
-9. **Explainability:** Placeholder for SHAP values (Step 9)
+8. **Calibration:** Placeholder for isotonic regression
+9. **Explainability:** Placeholder for SHAP values
 10. **Monitoring:** Alerting thresholds and re-evaluation schedule
 11. **Compliance:** License, regulatory notes, audit trail
 12. **Limitations:** Known issues, edge cases, assumption violations
@@ -558,26 +711,32 @@ Warning: categorical features have bins exceeding max_bin threshold
 - Evaluation results: `packages/models/fraud_baseline_v1_evaluation.json`
 - Calibration metadata: `packages/models/fraud_baseline_v1_calibration.json`
 - Calibrator artifact: `packages/models/fraud_baseline_v1_calibrator.pkl`
+- SHAP explainer: `packages/models/fraud_baseline_v1_explainer.pkl`
+- Explainer metadata: `packages/models/fraud_baseline_v1_explainer_metadata.json`
 - Training pipeline: `notebooks/03_model_training.ipynb`
 
 ## Key Metrics Summary
 
 | Category | Metric | Value | Target | Status |
 |----------|--------|-------|--------|--------|
-| **Performance** | Test ROC-AUC | 0.8861 | ≥0.85 | ✓ Exceeds +4.2% |
-| | Test PR-AUC | 0.4743 | ≥0.35 | ✓ Exceeds +35.5% |
-| | Training Time | 8.35s | <5min | ✓ Fast |
-| | Model Size | 1.18 MB | <10 MB | ✓ Compact |
-| **Business** | Cost Savings | $225,625 | Maximize | ✓ 55.5% reduction |
-| | Optimal Threshold | 0.4205 | N/A | ✓ Validated |
-| | Fraud Capture | 70.7% | Balance | ✓ Acceptable |
-| | Review Rate | 12.9% | <20% | ✓ Operational |
-| **Calibration** | ECE (Calibrated) | 0.0050 | <0.10 | ✓ Exceeds 50x |
-| | Brier Improvement | 65.8% | Positive | ✓ Significant |
-| | ROC-AUC Preserved | Yes (Δ=0.0001) | Unchanged | ✓ Validated |
-| **MLOps** | Metadata Sections | 13 | Comprehensive | ✓ Production-grade |
-| | Artifacts Generated | 7 | Complete | ✓ Versioned |
-| | Tuning Decision | Baseline | Data-driven | ✓ Rigorous |
+| **Performance** | Test ROC-AUC | 0.8861 | ≥0.85 | Exceeds +4.2% |
+| | Test PR-AUC | 0.4743 | ≥0.35 | Exceeds +35.5% |
+| | Training Time | 8.35s | <5min | Fast |
+| | Model Size | 1.18 MB | <10 MB | Compact |
+| **Business** | Cost Savings | $225,625 | Maximize | 55.5% reduction |
+| | Optimal Threshold | 0.4205 | N/A | Validated |
+| | Fraud Capture | 70.7% | Balance | Acceptable |
+| | Review Rate | 12.9% | <20% | Operational |
+| **Calibration** | ECE (Calibrated) | 0.0050 | <0.10 | Exceeds 50x |
+| | Brier Improvement | 65.8% | Positive | Significant |
+| | ROC-AUC Preserved | Yes (Δ=0.0001) | Unchanged | Validated |
+| **Explainability** | SHAP Sample Size | 10,000 | Representative | Adequate |
+| | Top Feature | C13 (0.224) | Interpretable | Domain-aligned |
+| | Computation Time | <20s | <1min | Fast |
+| | Inference Overhead | <10ms | <50ms | Real-time ready |
+| **MLOps** | Metadata Sections | 13 | Comprehensive | Production-grade |
+| | Artifacts Generated | 9 | Complete | Versioned |
+| | Tuning Decision | Baseline | Data-driven | Rigorous |
 
 ## References
 
