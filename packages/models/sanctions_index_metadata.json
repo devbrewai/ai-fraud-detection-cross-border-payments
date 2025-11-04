@@ -1,5 +1,5 @@
 {
-  "created_at": "2025-11-04T08:52:21.774936",
+  "created_at": "2025-11-04T10:22:02.724809",
   "total_records": 39350,
   "unique_entities": 18310,
   "sources": {
@@ -41,6 +41,25 @@
     "median_tokens_per_name": 3.0,
     "max_tokens_per_name": 21
   },
+  "blocking": {
+    "strategies": [
+      "first_token",
+      "bucket",
+      "initials"
+    ],
+    "first_token_index_keys": 15597,
+    "bucket_index_keys": 4,
+    "initials_index_keys": 15986,
+    "avg_candidates_first_token": 2.522279925626723,
+    "avg_candidates_bucket": 9837.5,
+    "avg_candidates_initials": 2.4609032903790817,
+    "recall_validation": {
+      "sample_size": 1000,
+      "recall_rate": 100.0,
+      "avg_candidates_per_query": 14445.2,
+      "search_space_reduction_pct": 63.29047013977128
+    }
+  },
   "columns": [
     "uid",
     "ent_num",
@@ -54,7 +73,10 @@
     "source",
     "name_tokens",
     "name_sorted",
-    "name_set"
+    "name_set",
+    "first_token",
+    "token_bucket",
+    "initials"
   ],
   "validation": {
     "empty_normalized_names": 0,
