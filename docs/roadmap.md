@@ -8,7 +8,7 @@ This roadmap outlines the phases, tasks, and success criteria for building this 
 
 **Documentation Structure:** This roadmap tracks project status only. For detailed technical findings, performance metrics, and design decisions, see the [findings/](findings/) directory.
 
-Last Updated: 2025-11-03 (Phase 2 Complete)
+Last Updated: 2025-11-04
 
 ## Phase 1: Data Preparation & Exploration
 
@@ -93,12 +93,12 @@ Last Updated: 2025-11-03 (Phase 2 Complete)
 
 ## Phase 3: Sanctions Screening Module
 
-**Status:** ⚪ Not Started
+**Status:** 🟡 In Progress
 
 ### Tasks
 
-- [ ] Load and preprocess OFAC SDN list
-- [ ] Load and preprocess OFAC Consolidated list
+- [x] Load and preprocess OFAC SDN list
+- [x] Load and preprocess OFAC Consolidated list
 - [ ] Implement fuzzy matching (RapidFuzz)
 - [ ] Add country/date filters
 - [ ] Generate confidence scores
@@ -195,7 +195,8 @@ Last Updated: 2025-11-03 (Phase 2 Complete)
 
 **Current Focus:** Phase 3 (Sanctions Screening Module) preparation.
 
-**Recent Completion:** 
+**Recent Completion:**
+
 - Hyperparameter tuning investigation (baseline model selected via systematic diagnostics)
 - Probability calibration (isotonic regression, ECE=0.0050, 96.8% improvement)
 - SHAP explainability (TreeExplainer, top features validated, production-ready artifacts)
@@ -204,21 +205,25 @@ Last Updated: 2025-11-03 (Phase 2 Complete)
 **Immediate Actions:**
 
 1. **Phase 2 Final Steps** (COMPLETE ✓)
+
    - [x] Commit calibration work
    - [x] SHAP explainability implemented
    - [x] Final model documentation complete
 
 2. **Phase 3: Sanctions Screening** (~4-6 hours)
+
    - [ ] OFAC fuzzy matching implementation
    - [ ] Confidence scoring system
    - [ ] Latency benchmarking
 
 3. **Phase 4: API Service** (~8-12 hours)
+
    - [ ] FastAPI service structure
    - [ ] Model inference integration
    - [ ] Redis/PostgreSQL setup
 
 4. **Phase 5: Demo UI** (~6-8 hours)
+
    - [ ] Next.js application
    - [ ] Real-time scoring interface
    - [ ] Deployment (Vercel)
