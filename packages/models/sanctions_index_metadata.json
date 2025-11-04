@@ -1,0 +1,52 @@
+{
+  "created_at": "2025-11-04T07:46:31.069470",
+  "total_records": 39350,
+  "unique_entities": 18310,
+  "sources": {
+    "SDN": 37841,
+    "Consolidated": 1509
+  },
+  "entity_types": {
+    "-0- ": 21308,
+    "individual": 16149,
+    "vessel": 1555,
+    "aircraft": 338
+  },
+  "top_programs": {
+    "RUSSIA-EO14024": 10339,
+    "SDGT": 7037,
+    "SDNTK": 2395,
+    "UKRAINE-EO13662] [RUSSIA-EO14024": 1415,
+    "GLOMAG": 1218,
+    "NPWMD] [IFSR": 1122,
+    "IRAN": 837,
+    "UKRAINE-EO13662": 785,
+    "BELARUS-EO14038": 642,
+    "SDGT] [IFSR": 622
+  },
+  "top_countries": {
+    "Russia": 11544,
+    "-0-": 5783,
+    "Iran": 3419,
+    "China": 1688,
+    "Mexico": 1396,
+    "Belarus": 998,
+    "Syria": 947,
+    "Lebanon": 918,
+    "United Arab Emirates": 869,
+    "Pakistan": 723
+  },
+  "name_types": {
+    "aka": 20266,
+    "primary": 18387,
+    "fka": 680,
+    "nka": 17
+  },
+  "country_coverage_pct": 100.0,
+  "validation": {
+    "empty_normalized_names": 0,
+    "duplicate_uids": 0,
+    "entity_type_coverage_pct": 100.0,
+    "program_coverage_pct": 100.0
+  }
+}
