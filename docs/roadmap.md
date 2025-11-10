@@ -107,7 +107,7 @@ Last Updated: 2025-11-10
 - [x] Validate blocking recall (100% achieved)
 - [x] Validate similarity scoring (monotonicity, determinism, score range)
 - [x] Validate filter functionality (post-scoring, audit logging, fallback)
-- [ ] Implement decision logic & thresholds (is_match, review, no_match)
+- [x] Implement decision logic & thresholds (is_match, review, no_match)
 - [ ] Test matching accuracy (precision@top1 ≥ 95%)
 - [ ] Benchmark matching latency (p95 < 50ms target)
 - [ ] Document matching logic and edge cases
@@ -116,8 +116,8 @@ Last Updated: 2025-11-10
 
 - [x] Fuzzy matching working with confidence scores
 - [x] Country/program filters implemented (date filter not applicable)
+- [x] Decision thresholds implemented (is_match ≥ 0.90, review ≥ 0.80)
 - [ ] Matching latency <50ms (pending benchmarking)
-- [ ] Decision thresholds implemented (is_match ≥ 0.90, review ≥ 0.80)
 
 ## Phase 4: API Service & Infrastructure
 
@@ -200,13 +200,14 @@ Last Updated: 2025-11-10
 
 ## Next Steps
 
-**Current Focus:** Phase 3 (Sanctions Screening Module) - Decision Logic & Thresholds.
+**Current Focus:** Phase 3 (Sanctions Screening Module) - Latency Optimization & Benchmarking.
 
 **Recent Completion:**
 
 - OFAC data loading, normalization, tokenization, and blocking (100% recall achieved)
 - Similarity scoring with RapidFuzz composite scoring (validated: monotonicity, determinism, score range)
 - Country and program filters with audit logging and fallback behavior (validated)
+- Decision logic & thresholds (is_match ≥ 0.90, review ≥ 0.80, no_match < 0.80) with comprehensive validation
 
 **Immediate Actions:**
 
@@ -217,7 +218,7 @@ Last Updated: 2025-11-10
    - [x] Multi-strategy blocking (first token, bucket, initials)
    - [x] Similarity scoring (RapidFuzz composite scoring)
    - [x] Country and program filters
-   - [ ] Decision logic & thresholds (is_match ≥ 0.90, review ≥ 0.80)
+   - [x] Decision logic & thresholds (is_match ≥ 0.90, review ≥ 0.80)
    - [ ] Latency optimization and benchmarking (p95 < 50ms target)
    - [ ] Evaluation protocol (precision@top1 ≥ 95%)
    - [ ] Inference wrapper & API contract
