@@ -13,7 +13,7 @@ This document captures technical findings, performance metrics, and design decis
 - **Completed**: Multi-strategy blocking with inverted indices
 - **Completed**: Similarity scoring (RapidFuzz composite scoring)
 - **Completed**: Country and program filters with audit logging
-- **In progress**: Decision logic & thresholds (in progress)
+- **Completed**: Decision logic & thresholds (is_match ≥ 0.90, review ≥ 0.80, no_match < 0.80)
 - **In progress**: Latency benchmarking and optimization (pending)
 
 ## Dataset Characteristics
@@ -434,12 +434,43 @@ composite_score = max(0.0, min(1.0, raw_score / 100.0))
 
 ---
 
-## Remaining Implementation
+## Decision Logic & Thresholds
 
-### Decision Logic & Thresholds
-- Confidence threshold policy (is_match ≥ 0.90, review ≥ 0.80)
-- Match decision rationale generation
-- Precision@top1 validation on labeled set
+### Threshold Policy Implementation
+
+**Three-Tier Decision System:**
+- **is_match** (score ≥ 0.90): High confidence match requiring immediate action
+- **review** (0.80 ≤ score < 0.90): Ambiguous case requiring manual review
+- **no_match** (score < 0.80): Low confidence, likely not a match
+
+**Implementation:**
+- `apply_decision_threshold()` function applies threshold policy to confidence scores
+- `score_candidates_with_decision()` integrates decision logic with scoring pipeline
+- Decision applied to top candidate only, with rationale provided for audit
+
+**Decision Output Structure:**
+- `decision`: One of 'is_match', 'review', 'no_match'
+- `is_match`: Boolean flag for high confidence matches
+- `requires_review`: Boolean flag for ambiguous cases
+- `confidence`: Score value (0.0-1.0)
+- `rationale`: Human-readable explanation with score and threshold context
+
+**Validation Results:**
+- Threshold boundaries correctly applied (0.90, 0.80)
+- Decision categories achievable (is_match, review, no_match)
+- Decision rationales are clear and informative
+- Top-K candidates returned with decisions on top candidate
+- Integration with filters maintained (decisions applied post-filtering)
+
+**Production Considerations:**
+- Thresholds balance automation (is_match) with risk management (review band)
+- Rationale provides audit trail for compliance and debugging
+- Three-tier system enables automated processing for high-confidence matches while flagging ambiguous cases
+- Decision logic applied only to top candidate; other candidates retain scores for manual review if needed
+
+---
+
+## Remaining Implementation
 
 ### Latency Optimization
 - Batch scoring with rapidfuzz.process.cdist
@@ -468,12 +499,12 @@ composite_score = max(0.0, min(1.0, raw_score / 100.0))
 - **Similarity Scoring**: Composite scoring implemented with validation (monotonicity, determinism, score range)
 - **Country Filters**: Implemented with audit logging and fallback behavior
 - **Program Filters**: Implemented with multi-program support
+- **Decision Thresholds**: Three-tier system (is_match ≥ 0.90, review ≥ 0.80, no_match < 0.80) with comprehensive validation
 - **Artifacts Versioned**: sanctions_index.parquet, blocking_indices.json, metadata.json
 - **Reproducibility**: Deterministic builds with metadata tracking
 
 ### In Progress
 
-- **Decision Thresholds**: is_match/review/no_match logic (Step 6)
 - **Matching Accuracy**: ≥95% precision@top1 (pending labeled evaluation set)
 - **Latency**: p95 < 50ms (pending benchmarking and optimization)
 - **Audit Payload**: Complete metadata structure (pending API integration)
