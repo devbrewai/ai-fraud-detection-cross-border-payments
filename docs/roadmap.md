@@ -1,6 +1,6 @@
 # Research Roadmap
 
-**Cross-Border Payments Fraud & Sanctions Screening**
+**AI Fraud Detection & Sanctions Screening for Cross-Border Payments**
 
 This roadmap outlines the phases, tasks, and success criteria for building this research case study from data preparation through final documentation.
 
@@ -8,7 +8,7 @@ This roadmap outlines the phases, tasks, and success criteria for building this 
 
 **Documentation Structure:** This roadmap tracks project status only. For detailed technical findings, performance metrics, and design decisions, see the [findings/](findings/) directory.
 
-Last Updated: 2025-11-04
+Last Updated: 2025-11-10
 
 ## Phase 1: Data Preparation & Exploration
 
@@ -99,18 +99,25 @@ Last Updated: 2025-11-04
 
 - [x] Load and preprocess OFAC SDN list
 - [x] Load and preprocess OFAC Consolidated list
-- [ ] Implement fuzzy matching (RapidFuzz)
-- [ ] Add country/date filters
-- [ ] Generate confidence scores
-- [ ] Test matching accuracy
-- [ ] Benchmark matching latency
+- [x] Implement fuzzy matching (RapidFuzz)
+- [x] Add country/program filters (date filter not available in CSV data)
+- [x] Generate confidence scores (composite similarity scoring)
+- [x] Implement tokenization and canonical forms
+- [x] Implement multi-strategy blocking (first token, bucket, initials)
+- [x] Validate blocking recall (100% achieved)
+- [x] Validate similarity scoring (monotonicity, determinism, score range)
+- [x] Validate filter functionality (post-scoring, audit logging, fallback)
+- [ ] Implement decision logic & thresholds (is_match, review, no_match)
+- [ ] Test matching accuracy (precision@top1 ≥ 95%)
+- [ ] Benchmark matching latency (p95 < 50ms target)
 - [ ] Document matching logic and edge cases
 
 **Success Criteria:**
 
-- [ ] Fuzzy matching working with confidence scores
-- [ ] Country/date filters implemented
-- [ ] Matching latency <50ms
+- [x] Fuzzy matching working with confidence scores
+- [x] Country/program filters implemented (date filter not applicable)
+- [ ] Matching latency <50ms (pending benchmarking)
+- [ ] Decision thresholds implemented (is_match ≥ 0.90, review ≥ 0.80)
 
 ## Phase 4: API Service & Infrastructure
 
@@ -193,44 +200,43 @@ Last Updated: 2025-11-04
 
 ## Next Steps
 
-**Current Focus:** Phase 3 (Sanctions Screening Module) preparation.
+**Current Focus:** Phase 3 (Sanctions Screening Module) - Decision Logic & Thresholds.
 
 **Recent Completion:**
 
-- Hyperparameter tuning investigation (baseline model selected via systematic diagnostics)
-- Probability calibration (isotonic regression, ECE=0.0050, 96.8% improvement)
-- SHAP explainability (TreeExplainer, top features validated, production-ready artifacts)
-- Phase 2 complete with all artifacts generated
+- OFAC data loading, normalization, tokenization, and blocking (100% recall achieved)
+- Similarity scoring with RapidFuzz composite scoring (validated: monotonicity, determinism, score range)
+- Country and program filters with audit logging and fallback behavior (validated)
 
 **Immediate Actions:**
 
-1. **Phase 2 Final Steps** (COMPLETE ✓)
+1. **Phase 3: Sanctions Screening** (In Progress)
 
-   - [x] Commit calibration work
-   - [x] SHAP explainability implemented
-   - [x] Final model documentation complete
+   - [x] OFAC data loading and normalization
+   - [x] Tokenization and canonical forms
+   - [x] Multi-strategy blocking (first token, bucket, initials)
+   - [x] Similarity scoring (RapidFuzz composite scoring)
+   - [x] Country and program filters
+   - [ ] Decision logic & thresholds (is_match ≥ 0.90, review ≥ 0.80)
+   - [ ] Latency optimization and benchmarking (p95 < 50ms target)
+   - [ ] Evaluation protocol (precision@top1 ≥ 95%)
+   - [ ] Inference wrapper & API contract
 
-2. **Phase 3: Sanctions Screening** (~4-6 hours)
-
-   - [ ] OFAC fuzzy matching implementation
-   - [ ] Confidence scoring system
-   - [ ] Latency benchmarking
-
-3. **Phase 4: API Service** (~8-12 hours)
+2. **Phase 4: API Service** (~8-12 hours)
 
    - [ ] FastAPI service structure
    - [ ] Model inference integration
    - [ ] Redis/PostgreSQL setup
 
-4. **Phase 5: Demo UI** (~6-8 hours)
+3. **Phase 5: Demo UI** (~6-8 hours)
 
    - [ ] Next.js application
    - [ ] Real-time scoring interface
    - [ ] Deployment (Vercel)
 
-5. **Phase 6: Final Documentation** (~3-4 hours)
+4. **Phase 6: Final Documentation** (~3-4 hours)
    - [ ] Case study summary
    - [ ] Architecture diagrams
    - [ ] Deployment guide
 
-**For detailed progress and technical insights:** See [Phase 1 Findings](findings/phase-1-data-exploration.md) and [Phase 2 Findings](findings/phase-2-model-training.md).
+**For detailed progress and technical insights:** See [Phase 1 Findings](findings/phase-1-data-exploration.md), [Phase 2 Findings](findings/phase-2-model-training.md), and [Phase 3 Findings](findings/phase-3-sanctions-screening.md).
