@@ -1,19 +1,20 @@
 # Phase 3: Sanctions Screening Module Findings
 
 **Status:** In Progress  
-**Last Updated:** 2025-11-04
+**Last Updated:** 2025-11-10
 
 ## Overview
 
 This document captures technical findings, performance metrics, and design decisions from the sanctions screening module implementation. The module screens transaction names against OFAC SDN and Consolidated lists using fuzzy matching with multi-strategy blocking for low-latency, high-recall candidate generation.
 
 **Implementation Status:**
-- OFAC data loading, normalization, and validation
-- Tokenization and canonical form generation
-- Multi-strategy blocking with inverted indices
-- Similarity scoring (in progress)
-- Confidence calibration and filtering (in progress)
-- Latency benchmarking and optimization (in progress)
+- **Completed**: OFAC data loading, normalization, and validation
+- **Completed**: Tokenization and canonical form generation
+- **Completed**: Multi-strategy blocking with inverted indices
+- **Completed**: Similarity scoring (RapidFuzz composite scoring)
+- **Completed**: Country and program filters with audit logging
+- **In progress**: Decision logic & thresholds (in progress)
+- **In progress**: Latency benchmarking and optimization (pending)
 
 ## Dataset Characteristics
 
@@ -364,23 +365,98 @@ def normalize_text(text: str) -> str:
 
 ---
 
+## Similarity Scoring (RapidFuzz)
+
+### Composite Scoring Strategy
+
+**Implementation:**
+- **Token Set Ratio** (45% weight): Compares unique token sets, handles word order variations
+- **Token Sort Ratio** (35% weight): Compares sorted token sequences, robust to order and duplicates
+- **Partial Ratio** (20% weight): Handles substring matches and aliases
+
+**Composite Score Formula:**
+```
+score = 0.45 * token_set_ratio + 0.35 * token_sort_ratio + 0.20 * partial_ratio
+composite_score = max(0.0, min(1.0, raw_score / 100.0))
+```
+
+**Validation Results:**
+- **Monotonicity**: More similar names produce higher scores (verified)
+- **Determinism**: Same inputs always produce identical outputs (verified)
+- **Score Range**: All scores in [0, 1] range (verified)
+- **Sensitivity**: System distinguishes matches from non-matches (verified)
+
+**Test Results:**
+- Exact matches: Score = 1.000
+- Word order variations: Score ≈ 0.933 (e.g., "john doe" vs "doe john")
+- Substring matches: Score ≈ 0.817 (e.g., "bank of china" vs "industrial and commercial bank of china")
+- Punctuation variations: Score ≈ 0.975 (e.g., "al qaida" vs "al-qaida")
+- No matches: Score ≈ 0.511 (e.g., "jose maria" vs "john smith")
+
+**Production Considerations:**
+- Weights tuned empirically for name matching (token-based prioritized over character-based)
+- Composite score provides balanced view of multiple similarity dimensions
+- Scores are deterministic and reproducible for audit purposes
+
+---
+
+## Filters (Country/Program)
+
+### Filter Implementation
+
+**Filter Types:**
+1. **Country Filter**: Filters candidates by ISO country code (case-insensitive)
+2. **Program Filter**: Filters candidates by sanctions program(s), supports multiple programs
+3. **Date Filter**: Not implemented (date information not available in OFAC CSV format)
+
+**Filter Application Strategy:**
+- **Post-scoring application**: Filters applied after similarity scoring to maintain ranking quality
+- **Composable**: Multiple filters can be combined (country + program)
+- **Fallback behavior**: If filters remove all candidates, returns top unfiltered results with clear reason
+
+**Audit Logging:**
+- All applied filters tracked in `applied_filters` dictionary
+- Before/after candidate counts logged for transparency
+- Fallback events logged with reason when filters remove all candidates
+
+**Validation Results:**
+- Filters applied post-scoring (scores computed before filtering)
+- Filter logging in output (all filters tracked)
+- Fallback behavior verified (returns unfiltered when filters remove all)
+- Filter effectiveness verified (correctly reduces candidate sets)
+- Combined filters work correctly (country + program together)
+
+**Production Considerations:**
+- Country filter uses case-insensitive matching (handles "Cuba" vs "CUBA")
+- Program filter uses substring matching (handles multi-program fields like "CUBA] [IRAN")
+- Date filter not available with CSV data; would require XML/Advanced format or enriched dataset
+- Filter fallback ensures no false negatives when filters are too restrictive
+
+---
+
 ## Remaining Implementation
 
-### Similarity Scoring (RapidFuzz)
-- token_sort_ratio on `name_sorted`
-- token_set_ratio on `name_set`
-- ratio on `name_norm`
-- Weighted score combination
+### Decision Logic & Thresholds
+- Confidence threshold policy (is_match ≥ 0.90, review ≥ 0.80)
+- Match decision rationale generation
+- Precision@top1 validation on labeled set
 
-### Confidence Calibration
-- Similarity score mapping to [0,1] confidence range
-- Country-aware adjustments
-- Match/no-match threshold definition
-
-### Latency Benchmarking
-- End-to-end screening latency profiling
-- Hot path optimization (blocking, scoring)
+### Latency Optimization
+- Batch scoring with rapidfuzz.process.cdist
+- Candidate set capping per blocking strategy
+- LRU caching for repeated queries
 - p95 < 50ms target validation
+
+### Evaluation Protocol
+- Labeled test set creation (50-100 names)
+- Precision@1, Recall@top3 metrics
+- False positive rate at thresholds
+- Latency benchmarking (p50/p95/p99)
+
+### Inference Wrapper & API Contract
+- Clean Python interface (dataclasses)
+- API response structure
+- Version tracking and audit metadata
 
 ## Success Criteria Status
 
@@ -389,16 +465,18 @@ def normalize_text(text: str) -> str:
 - **Data Quality**: 100% field completeness, zero empty normalized names, zero duplicate UIDs
 - **Blocking Recall**: 100% on 1K sample (target ≥99.5%)
 - **Search Space Reduction**: ~99% reduction (39,350 → ~200-500 candidates)
+- **Similarity Scoring**: Composite scoring implemented with validation (monotonicity, determinism, score range)
+- **Country Filters**: Implemented with audit logging and fallback behavior
+- **Program Filters**: Implemented with multi-program support
 - **Artifacts Versioned**: sanctions_index.parquet, blocking_indices.json, metadata.json
 - **Reproducibility**: Deterministic builds with metadata tracking
 
 ### In Progress
 
-- **Matching Accuracy**: ≥95% precision@top1 (pending similarity scoring)
-- **Latency**: p95 < 50ms (pending benchmarking)
-- **Confidence Score**: Calibrated [0,1] range (pending scoring implementation)
-- **Country Filters**: Supported and logged (pending integration)
-- **Audit Payload**: Complete metadata (pending API integration)
+- **Decision Thresholds**: is_match/review/no_match logic (Step 6)
+- **Matching Accuracy**: ≥95% precision@top1 (pending labeled evaluation set)
+- **Latency**: p95 < 50ms (pending benchmarking and optimization)
+- **Audit Payload**: Complete metadata structure (pending API integration)
 
 ---
 
