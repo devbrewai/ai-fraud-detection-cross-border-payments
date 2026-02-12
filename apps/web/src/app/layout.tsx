@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
-import { AppShell } from "@/components/app-shell";
 import { Analytics } from "@/components/analytics";
 import "./globals.css";
 
@@ -31,7 +30,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
-        <AppShell>{children}</AppShell>
+        {children}
         <Analytics />
       </body>
     </html>
