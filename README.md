@@ -116,8 +116,14 @@ Run `make help` to see all available commands.
 
 ```bash
 cd apps/web
-npm install
-npm run dev
+bun install
+
+# Set up auth database (requires Neon Postgres — see apps/web/.env.example)
+cp .env.example .env.local   # then fill in your values
+bun run db:generate
+bun run db:migrate
+
+bun run dev
 ```
 
 ## Documentation

@@ -23,12 +23,18 @@ Sentinel is an open-source research case study demonstrating AI fraud detection 
 
 ```bash
 make help          # Show all available commands
+make dev           # Start API + Web concurrently (requires docker-up)
 make docker-up     # Start Redis & Postgres containers
 make docker-down   # Stop Docker containers
 make run-api       # Start FastAPI server (requires docker-up first)
 make run-web       # Start Next.js frontend (uses bun)
 make test          # Run API tests
+make test-web      # Run Next.js component tests
 make lint          # Run ruff linting
+make db-generate   # Generate Drizzle migration files from schema changes
+make db-migrate    # Apply pending migrations to Neon auth DB
+make db-push       # Push schema directly to Neon (dev shortcut)
+make db-studio     # Open Drizzle Studio GUI
 ```
 
 ### API (Python/FastAPI)
@@ -62,6 +68,18 @@ bun install        # or: npm install
 bun run dev        # Development server
 bun run build      # Production build
 bun run lint       # ESLint
+bun run test       # Run component tests (watch mode)
+bun run test:run   # Run component tests (single run)
+```
+
+### Web (Auth Database)
+
+```bash
+cd apps/web
+bun run db:generate   # Generate migration files from schema changes
+bun run db:migrate    # Apply pending migrations to Neon
+bun run db:push       # Push schema directly (no migration files)
+bun run db:studio     # Open Drizzle Studio to browse auth tables
 ```
 
 ### Notebooks
@@ -122,6 +140,14 @@ Copy `apps/api/.env.example` to `apps/api/.env` and configure:
 - `FEATURE_REGISTRY_PATH` - Path to feature registry JSON
 
 **Docker note:** `docker-compose.yml` overrides `DATABASE_URL` and `REDIS_URL` to use container hostnames (`db`, `redis`) instead of `localhost`.
+
+Copy `apps/web/.env.example` to `apps/web/.env.local` and configure:
+
+- `BETTER_AUTH_SECRET` - Session signing secret (generate with `openssl rand -base64 32`)
+- `BETTER_AUTH_URL` - App base URL (default: `http://localhost:3000`)
+- `AUTH_DATABASE_URL` - Neon Postgres connection string for auth tables
+- `GOOGLE_CLIENT_ID` - Google OAuth client ID (optional)
+- `GOOGLE_CLIENT_SECRET` - Google OAuth client secret (optional)
 
 ## Code quality
 
