@@ -110,7 +110,7 @@ export default function Dashboard() {
     setSelectedHistoryId(undefined);
 
     try {
-      const response = await scoreTransaction(data);
+      const response = await scoreTransaction(data, { explain: true });
       if (currentRequestIdRef.current === requestId) {
         setResult(response);
         setCurrentRequest(data);

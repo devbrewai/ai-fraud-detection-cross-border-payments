@@ -32,7 +32,7 @@ This reference pipeline combines public datasets (IEEE-CIS, PaySim, OFAC) with m
 
 **Video walkthrough:** [coming soon]
 
-**Demo note:** The live demo computes full SHAP explanations for every transaction to demonstrate model transparency. This adds ~1-1.5s overhead for explainability generation. The underlying API achieves <200ms inference when explainability is pre-computed or sampled (standard production pattern).
+**Demo note:** The live demo requests SHAP explanations (`?explain=true`) for every transaction to demonstrate model transparency. This adds ~1-1.5s overhead for explainability generation. The underlying scoring API achieves <50ms p95 latency when explainability is not requested (standard production pattern).
 
 ## Data sources
 

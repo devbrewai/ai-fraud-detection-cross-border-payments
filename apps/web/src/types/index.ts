@@ -118,6 +118,7 @@ export interface ModelMetrics {
 export interface SanctionsMetrics {
   precision_at_1: number;
   avg_latency_ms: number;
+  latency_p95_ms?: number;
 }
 
 export interface AnalyticsResponse {

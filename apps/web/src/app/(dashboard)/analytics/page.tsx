@@ -388,15 +388,15 @@ export default function AnalyticsPage() {
                   </p>
                 </div>
                 <div className="p-3 sm:p-4 bg-gray-50 rounded-sm">
-                  <p className="text-xs sm:text-sm text-gray-500 truncate">Avg latency</p>
+                  <p className="text-xs sm:text-sm text-gray-500 truncate">Latency (p50)</p>
                   <p className="text-lg sm:text-2xl font-semibold text-gray-900 mt-1">
                     {sanctions_metrics.avg_latency_ms}ms
                   </p>
                 </div>
                 <div className="p-3 sm:p-4 bg-gray-50 rounded-sm">
-                  <p className="text-xs sm:text-sm text-gray-500 truncate">Total screened</p>
+                  <p className="text-xs sm:text-sm text-gray-500 truncate">Latency (p95)</p>
                   <p className="text-lg sm:text-2xl font-semibold text-gray-900 mt-1">
-                    {summary.total_screened.toLocaleString()}
+                    {sanctions_metrics.latency_p95_ms ?? "—"}ms
                   </p>
                 </div>
                 <div className="p-3 sm:p-4 bg-gray-50 rounded-sm">

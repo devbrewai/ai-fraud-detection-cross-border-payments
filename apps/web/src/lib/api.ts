@@ -26,6 +26,7 @@ export async function checkHealth(): Promise<HealthResponse> {
 
 export interface ScoreTransactionOptions {
   signal?: AbortSignal;
+  explain?: boolean;
 }
 
 export async function scoreTransaction(
@@ -33,7 +34,8 @@ export async function scoreTransaction(
   options?: ScoreTransactionOptions
 ): Promise<ScoreResponse> {
   try {
-    const response = await fetch(`${API_URL}/api/v1/score`, {
+    const queryString = options?.explain ? "?explain=true" : "";
+    const response = await fetch(`${API_URL}/api/v1/score${queryString}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
