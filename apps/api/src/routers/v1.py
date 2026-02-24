@@ -1,6 +1,6 @@
 import time
 import asyncio
-from fastapi import APIRouter, BackgroundTasks
+from fastapi import APIRouter, BackgroundTasks, Query
 from ..schemas.requests import (
     TransactionRequest,
     ScoreResponse,
@@ -25,7 +25,11 @@ REGISTRY = load_feature_registry()
 
 
 @router.post("/score", response_model=ScoreResponse)
-async def score_transaction(request: TransactionRequest, background_tasks: BackgroundTasks):
+async def score_transaction(
+    request: TransactionRequest,
+    background_tasks: BackgroundTasks,
+    explain: bool = Query(False, description="Include SHAP explanations (adds ~1s latency)"),
+):
     start_time = time.time()
 
     # 1. Run Sanctions Screening & Feature Fetching
@@ -46,10 +50,14 @@ async def score_transaction(request: TransactionRequest, background_tasks: Backg
     request_data["card1_txn_1.0h"] = velocity_features["velocity_1h"]
     request_data["card1_txn_24.0h"] = velocity_features["velocity_24h"]
 
-    # 3. Run Fraud Model with SHAP Explanation
-    risk_score, top_features_raw = fraud_model_service.predict_with_explanation(
-        request_data, top_n=5
-    )
+    # 3. Run Fraud Model (with optional SHAP explanation)
+    if explain:
+        risk_score, top_features_raw = fraud_model_service.predict_with_explanation(
+            request_data, top_n=5
+        )
+    else:
+        risk_score = fraud_model_service.predict(request_data)
+        top_features_raw = []
 
     # Convert to Pydantic models
     top_features = [

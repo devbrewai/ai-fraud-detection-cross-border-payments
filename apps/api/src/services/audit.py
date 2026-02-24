@@ -173,16 +173,18 @@ class AuditService:
                 "daily_volume": daily_volume,
                 "risk_distribution": risk_distribution,
                 "latency_trend": latency_trend,
-                # Static model metrics (from training, not runtime)
+                # Static model metrics (from evaluation artifact: optimal_f1 threshold)
                 "model_metrics": {
                     "roc_auc": 0.8861,
-                    "precision": 0.82,
-                    "recall": 0.79,
-                    "f1_score": 0.805,
+                    "precision": 0.648,
+                    "recall": 0.358,
+                    "f1_score": 0.461,
                 },
+                # Sanctions metrics (from sanctions_evaluation_metrics.json)
                 "sanctions_metrics": {
                     "precision_at_1": 0.975,
-                    "avg_latency_ms": 12.3,
+                    "avg_latency_ms": 23.1,
+                    "latency_p95_ms": 47.1,
                 },
             }
 

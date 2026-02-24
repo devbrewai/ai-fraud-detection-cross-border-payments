@@ -141,6 +141,7 @@ class SanctionsMetrics(BaseModel):
     """Sanctions screening performance metrics."""
     precision_at_1: float
     avg_latency_ms: float
+    latency_p95_ms: Optional[float] = None
 
 
 class AnalyticsResponse(BaseModel):

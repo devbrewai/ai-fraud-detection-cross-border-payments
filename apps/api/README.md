@@ -8,7 +8,7 @@ FastAPI service for real-time fraud scoring and sanctions screening.
 - **Sanctions screening:** Fuzzy matching against OFAC SDN/Consolidated lists (~40k names)
 - **Real-time velocity features:** Redis-backed transaction counters
 - **Audit logging:** Async PostgreSQL logging for compliance
-- **Low latency:** <30ms p95 end-to-end
+- **Low latency:** <50ms p95 scoring; on-demand SHAP explainability via `?explain=true`
 
 ## Quick start
 
@@ -181,11 +181,14 @@ curl -X POST http://localhost:8000/api/v1/score \
 
 ## Performance
 
-| Metric              | Target | Achieved |
-| ------------------- | ------ | -------- |
-| End-to-end latency  | <200ms | ~30ms    |
-| Model inference     | <50ms  | <10ms    |
-| Sanctions screening | <50ms  | ~25ms    |
+| Metric                        | Target | Achieved  |
+| ----------------------------- | ------ | --------- |
+| Scoring latency (no SHAP)     | <200ms | ~30-50ms  |
+| Scoring + SHAP explainability | —      | ~1-1.5s   |
+| Model inference               | <50ms  | <10ms     |
+| Sanctions screening (p95)     | <50ms  | ~47ms     |
+
+SHAP explainability is opt-in via `?explain=true` query parameter. The demo UI requests explanations by default.
 
 ## Environment variables
 
