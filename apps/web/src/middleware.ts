@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSessionCookie } from "better-auth/cookies";
+// AUTH_GATE: Uncomment to re-enable auth protection
+// import { getSessionCookie } from "better-auth/cookies";
 
-export async function middleware(request: NextRequest) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function middleware(_request: NextRequest) {
   // AUTH_GATE: Uncomment the block below to re-enable auth protection
   // const sessionCookie = getSessionCookie(request);
   //

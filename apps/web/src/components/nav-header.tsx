@@ -8,7 +8,8 @@ import { SiGithub } from "@icons-pack/react-simple-icons";
 import { cn } from "@/lib/utils";
 import { checkHealth } from "@/lib/api";
 import Image from "next/image";
-import { UserMenu } from "@/components/auth/user-menu";
+// AUTH_GATE: Uncomment to re-enable user menu
+// import { UserMenu } from "@/components/auth/user-menu";
 
 const navItems = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -132,7 +133,8 @@ export function NavHeader() {
                 {currentStatus.label}
               </span>
             </div>
-            <UserMenu />
+            {/* AUTH_GATE: Uncomment to re-enable user menu */}
+            {/* <UserMenu /> */}
             <a
               href="https://github.com/devbrewai/sentinel"
               target="_blank"
