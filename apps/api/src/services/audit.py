@@ -20,14 +20,22 @@ class AuditLog(Base):
 
 class AuditService:
     def __init__(self):
-        db_url = str(settings.DATABASE_URL).replace("postgresql://", "postgresql+asyncpg://")
-        self.engine = create_async_engine(db_url, echo=False)
-        self.async_session = sessionmaker(
-            self.engine, class_=AsyncSession, expire_on_commit=False
-        )
+        if settings.DATABASE_URL:
+            db_url = str(settings.DATABASE_URL).replace("postgresql://", "postgresql+asyncpg://")
+            self.engine = create_async_engine(db_url, echo=False)
+            self.async_session = sessionmaker(
+                self.engine, class_=AsyncSession, expire_on_commit=False
+            )
+        else:
+            self.engine = None
+            self.async_session = None
+            print("WARNING: DATABASE_URL not configured — audit logging disabled")
 
     async def init_db(self, max_retries: int = 5, retry_delay: float = 2.0):
         """Initialize database with retry logic for Docker container startup."""
+        if not self.engine:
+            print("Skipping database initialization — DATABASE_URL not configured")
+            return
         for attempt in range(max_retries):
             try:
                 async with self.engine.begin() as conn:
@@ -45,6 +53,8 @@ class AuditService:
                     raise
 
     async def log_transaction(self, data: dict):
+        if not self.async_session:
+            return
         async with self.async_session() as session:
             log_entry = AuditLog(
                 transaction_id=data.get("transaction_id"),
@@ -58,6 +68,43 @@ class AuditService:
 
     async def get_analytics(self) -> dict:
         """Get comprehensive analytics from audit logs."""
+        if not self.async_session:
+            return {
+                "summary": {
+                    "total_screened": 0,
+                    "avg_latency_ms": 0,
+                    "fraud_detected": 0,
+                    "sanctions_hits": 0,
+                    "fraud_rate": 0,
+                    "sanctions_rate": 0,
+                },
+                "daily_volume": [],
+                "risk_distribution": [
+                    {"name": "Low", "value": 0, "color": "#10b981"},
+                    {"name": "Medium", "value": 0, "color": "#f59e0b"},
+                    {"name": "High", "value": 0, "color": "#f97316"},
+                    {"name": "Critical", "value": 0, "color": "#ef4444"},
+                ],
+                "latency_trend": [
+                    {"hour": "00:00", "p50": 0, "p95": 0},
+                    {"hour": "04:00", "p50": 0, "p95": 0},
+                    {"hour": "08:00", "p50": 0, "p95": 0},
+                    {"hour": "12:00", "p50": 0, "p95": 0},
+                    {"hour": "16:00", "p50": 0, "p95": 0},
+                    {"hour": "20:00", "p50": 0, "p95": 0},
+                ],
+                "model_metrics": {
+                    "roc_auc": 0.8861,
+                    "precision": 0.648,
+                    "recall": 0.358,
+                    "f1_score": 0.461,
+                },
+                "sanctions_metrics": {
+                    "precision_at_1": 0.975,
+                    "avg_latency_ms": 23.1,
+                    "latency_p95_ms": 47.1,
+                },
+            }
         async with self.async_session() as session:
             now = datetime.now(timezone.utc)
             seven_days_ago = now - timedelta(days=7)
