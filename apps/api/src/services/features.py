@@ -7,9 +7,12 @@ class FeatureService:
 
     async def connect(self):
         """Initialize Redis connection pool."""
+        if not settings.REDIS_URL:
+            print("WARNING: REDIS_URL not configured — velocity features disabled")
+            return
         self.redis = redis.from_url(
-            str(settings.REDIS_URL), 
-            encoding="utf-8", 
+            str(settings.REDIS_URL),
+            encoding="utf-8",
             decode_responses=True
         )
 
@@ -27,6 +30,8 @@ class FeatureService:
         """
         if not self.redis:
             await self.connect()
+        if not self.redis:
+            return {"velocity_1h": 0, "velocity_24h": 0}
 
         # Keys for this card
         key_1h = f"vel:{card_id}:1h"
