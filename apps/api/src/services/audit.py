@@ -1,4 +1,6 @@
 import asyncio
+import ssl as stdlib_ssl
+from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy import Column, String, Float, Boolean, Integer, JSON, DateTime, text
@@ -19,10 +21,33 @@ class AuditLog(Base):
     latency_ms = Column(Float)
 
 class AuditService:
+    @staticmethod
+    def _prepare_asyncpg_url(url: str) -> tuple[str, dict]:
+        """Convert a PostgreSQL URL for asyncpg, stripping incompatible params."""
+        db_url = url.replace("postgresql://", "postgresql+asyncpg://")
+        parsed = urlparse(db_url)
+        params = parse_qs(parsed.query)
+
+        # asyncpg doesn't support sslmode/channel_binding as query params
+        needs_ssl = params.pop("sslmode", [None])[0] in ("require", "verify-full", "verify-ca")
+        params.pop("channel_binding", None)
+
+        clean_query = urlencode(params, doseq=True)
+        clean_url = urlunparse(parsed._replace(query=clean_query))
+
+        connect_args = {}
+        if needs_ssl:
+            ssl_ctx = stdlib_ssl.create_default_context()
+            ssl_ctx.check_hostname = False
+            ssl_ctx.verify_mode = stdlib_ssl.CERT_NONE
+            connect_args["ssl"] = ssl_ctx
+
+        return clean_url, connect_args
+
     def __init__(self):
         if settings.DATABASE_URL:
-            db_url = str(settings.DATABASE_URL).replace("postgresql://", "postgresql+asyncpg://")
-            self.engine = create_async_engine(db_url, echo=False)
+            db_url, connect_args = self._prepare_asyncpg_url(str(settings.DATABASE_URL))
+            self.engine = create_async_engine(db_url, echo=False, connect_args=connect_args)
             self.async_session = sessionmaker(
                 self.engine, class_=AsyncSession, expire_on_commit=False
             )
