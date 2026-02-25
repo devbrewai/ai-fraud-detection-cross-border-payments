@@ -33,31 +33,35 @@ class FeatureService:
         if not self.redis:
             return {"velocity_1h": 0, "velocity_24h": 0}
 
-        # Keys for this card
-        key_1h = f"vel:{card_id}:1h"
-        key_24h = f"vel:{card_id}:24h"
+        try:
+            # Keys for this card
+            key_1h = f"vel:{card_id}:1h"
+            key_24h = f"vel:{card_id}:24h"
 
-        # Pipeline for atomic execution (optional but good practice)
-        pipe = self.redis.pipeline()
-        
-        # Increment 1h counter
-        pipe.incr(key_1h)
-        pipe.expire(key_1h, 3600) # 1 hour TTL
-        
-        # Increment 24h counter
-        pipe.incr(key_24h)
-        pipe.expire(key_24h, 86400) # 24 hours TTL
-        
-        results = await pipe.execute()
-        
-        # Results order matches pipeline commands: [incr_1h, expire_1h, incr_24h, expire_24h]
-        count_1h = results[0]
-        count_24h = results[2]
+            # Pipeline for atomic execution (optional but good practice)
+            pipe = self.redis.pipeline()
 
-        return {
-            "velocity_1h": count_1h,
-            "velocity_24h": count_24h
-        }
+            # Increment 1h counter
+            pipe.incr(key_1h)
+            pipe.expire(key_1h, 3600) # 1 hour TTL
+
+            # Increment 24h counter
+            pipe.incr(key_24h)
+            pipe.expire(key_24h, 86400) # 24 hours TTL
+
+            results = await pipe.execute()
+
+            # Results order matches pipeline commands: [incr_1h, expire_1h, incr_24h, expire_24h]
+            count_1h = results[0]
+            count_24h = results[2]
+
+            return {
+                "velocity_1h": count_1h,
+                "velocity_24h": count_24h
+            }
+        except redis.RedisError as e:
+            print(f"WARNING: Redis error, falling back to default velocity: {e}")
+            return {"velocity_1h": 0, "velocity_24h": 0}
 
 # Global instance
 feature_service = FeatureService()
