@@ -1,4 +1,4 @@
-<div align="center" style="margin-bottom: 20px;">
+<div align="left" style="margin-bottom: 20px;">
   <img src="apps/web/public/logos/logo.svg" alt="Sentinel" width="280">
   <p style="margin-top: 10px;">
     AI fraud detection and sanctions screening (using OFAC lists) for cross-border payments.
