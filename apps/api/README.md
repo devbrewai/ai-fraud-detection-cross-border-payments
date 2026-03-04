@@ -20,9 +20,17 @@ FastAPI service for real-time fraud scoring and sanctions screening.
 
 ### 1. Start infrastructure
 
+From `apps/api`:
+
 ```bash
 cd apps/api
 docker-compose up -d redis db
+```
+
+Or from the **project root**:
+
+```bash
+make docker-up
 ```
 
 ### 2. Configure environment
@@ -54,6 +62,8 @@ PYTHONPATH=apps/api uvicorn src.main:app --reload
 ```bash
 curl http://localhost:8000/health
 ```
+
+Example response: `status`, `project`, `version`, `model_loaded`, `screener_loaded`. Use `model_loaded` and `screener_loaded` to confirm the API is ready to score.
 
 ## Docker
 
@@ -93,6 +103,12 @@ Once the API is running, interactive documentation is available at:
 | `POST` | `/api/v1/batch`     | Score a batch of transactions |
 | `GET`  | `/api/v1/analytics` | Get comprehensive analytics   |
 
+**Score:** Append `?explain=true` to include SHAP top-feature contributions (adds ~1s latency).
+
+**Batch:** Request body is a JSON object with a `transactions` array (max 100 items). Each item: `transaction_id`, `sender_name`, `TransactionAmt`, `card_id`, optional `sender_country`, optional `ProductCD`. Response includes `results`, `total_processed`, and `total_latency_ms`.
+
+**Analytics:** Returns summary metrics, daily volume, risk distribution, latency trends, and model/sanctions metrics.
+
 ### Example request
 
 ```bash
@@ -121,6 +137,8 @@ curl -X POST http://localhost:8000/api/v1/score \
 }
 ```
 
+When `?explain=true`, the response also includes `top_features` (SHAP contributions). The response always includes `velocity` (transactions_1h, transactions_24h). On a sanctions hit, `sanctions_details` is populated.
+
 ## Project structure
 
 ```
@@ -129,15 +147,17 @@ apps/api/
 │   ├── main.py              # FastAPI entry point
 │   ├── config.py            # Pydantic settings
 │   ├── routers/
-│   │   └── v1.py            # /score endpoint
+│   │   └── v1.py            # /score, /batch, /analytics endpoints
 │   ├── schemas/
 │   │   ├── feature_factory.py  # Dynamic schema generation
 │   │   └── requests.py      # Request/Response models
-│   └── services/
-│       ├── fraud_model.py   # LightGBM inference
-│       ├── sanctions.py     # OFAC screening
-│       ├── features.py      # Redis velocity counters
-│       └── audit.py         # PostgreSQL audit logging
+│   ├── services/
+│   │   ├── fraud_model.py   # LightGBM inference
+│   │   ├── sanctions.py     # OFAC screening
+│   │   ├── features.py      # Redis velocity counters
+│   │   └── audit.py         # PostgreSQL audit logging
+│   └── utils/
+│       └── countries.py     # ISO country code helpers
 ├── tests/
 │   └── test_score.py
 ├── Dockerfile
@@ -148,9 +168,19 @@ apps/api/
 
 ### Run unit tests
 
+From the **project root**:
+
 ```bash
-python apps/api/tests/test_score.py
+make test
 ```
+
+Or:
+
+```bash
+PYTHONPATH=apps/api pytest apps/api/tests -v
+```
+
+Some tests call the running API; start the server for full coverage.
 
 ### Verified rejection test
 
@@ -192,12 +222,13 @@ SHAP explainability is opt-in via `?explain=true` query parameter. The demo UI r
 
 ## Environment variables
 
-| Variable                | Description                       | Default                    |
-| ----------------------- | --------------------------------- | -------------------------- |
-| `REDIS_URL`             | Redis connection string           | `redis://localhost:6379/0` |
-| `DATABASE_URL`          | PostgreSQL connection string      | Required                   |
-| `MODEL_PATH`            | Path to LightGBM model file       | Required                   |
-| `SCREENER_PATH`         | Path to sanctions screener pickle | Required                   |
-| `FEATURE_REGISTRY_PATH` | Path to feature registry JSON     | Required                   |
-| `API_V1_STR`            | API version prefix                | `/api/v1`                  |
-| `PROJECT_NAME`          | Project name for OpenAPI docs     | `Sentinel API`             |
+| Variable                | Description                                                                 | Default                    |
+| ----------------------- | --------------------------------------------------------------------------- | -------------------------- |
+| `REDIS_URL`             | Redis connection string (optional — velocity features disabled if unset)     | `redis://localhost:6379/0` |
+| `DATABASE_URL`          | PostgreSQL connection string (optional — audit/analytics disabled if unset) | —                          |
+| `MODEL_PATH`            | Path to LightGBM model file                                                 | Required                   |
+| `SCREENER_PATH`         | Path to sanctions screener pickle                                          | Required                   |
+| `EXPLAINER_PATH`        | Path to SHAP explainer pickle                                              | Required                   |
+| `FEATURE_REGISTRY_PATH` | Path to feature registry JSON                                              | Required                   |
+| `API_V1_STR`            | API version prefix                                                         | `/api/v1`                  |
+| `PROJECT_NAME`          | Project name for OpenAPI docs                                              | `Sentinel API`             |
