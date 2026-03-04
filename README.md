@@ -1,10 +1,12 @@
-# Sentinel
+<div align="center">
+  <img src="apps/web/public/logos/logo.svg" alt="Sentinel" width="280">
+</div>
 
 AI fraud detection and sanctions screening (using OFAC lists) for cross-border payments.
 
-[![Sentinel demo](assets/demo-thumbnail.png)](https://youtu.be/NNC8YpdBePY)
+[![Sentinel demo](assets/sentinel-demo-thumbnai.png)](https://youtu.be/NNC8YpdBePY)
 
-**Live demo:** [sentinel.devbrew.ai](https://sentinel.devbrew.ai) · **Watch the full demo** → [YouTube](https://youtu.be/NNC8YpdBePY)
+**Live demo:** [sentinel.devbrew.ai](https://sentinel.devbrew.ai) · **Watch the full demo** [YouTube](https://youtu.be/NNC8YpdBePY)
 
 The live app enables SHAP explanations for every transaction (~1–1.5s extra); the API alone reaches <50ms p95 when explainability is off.
 
