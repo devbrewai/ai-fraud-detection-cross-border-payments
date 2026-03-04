@@ -13,7 +13,7 @@ It demonstrates a low-latency (<200ms) fraud detection pipeline for cross-border
 
 ## Tech Stack
 
-- **Framework**: Next.js 15 (App Router)
+- **Framework**: Next.js 16 (App Router)
 - **UI**: Shadcn UI + Tailwind CSS
 - **State management**: React hook form + Zod
 - **Charts**: Recharts
