@@ -8,7 +8,7 @@ Sentinel is an open-source research case study for AI fraud detection and sancti
 
 ## Features
 
-- **CNP fraud detection** — Trained ML models for card-not-present transactions
+- **CNP fraud detection** — LightGBM model for card-not-present transactions
 - **OFAC sanctions screening** — Fuzzy matching against OFAC SDN and Consolidated lists
 - **Explainable risk scores** — Real-time fraud risk with SHAP explanations; sub-200ms latency target
 - **Notebooks** — EDA, model training, and sanctions screener build
@@ -28,13 +28,13 @@ Sentinel is an open-source research case study for AI fraud detection and sancti
 
 The live app enables SHAP explanations for every transaction (~1–1.5s extra); the API alone reaches <50ms p95 when explainability is off.
 
-**Full case study:** [devbrew.ai/case-studies/sentinel](https://www.devbrew.ai/case-studies/sentinel)
+**Full case study:** [devbrew.ai/work/sentinel](https://www.devbrew.ai/work/sentinel)
 
 ## Tech stack
 
-- **Backend:** FastAPI, Python, LightGBM/XGBoost, Redis, PostgreSQL
-- **Frontend:** Next.js, Tailwind CSS, Recharts
-- **Hosting:** Render (API), Vercel (UI)
+- **Backend:** FastAPI, Python, LightGBM, SHAP (explainability), RapidFuzz (sanctions), Redis, PostgreSQL
+- **Frontend:** Next.js 16, React 19, Tailwind CSS, Recharts, Radix UI
+- **Demo hosting:** Render (API), Vercel (UI)
 
 ## Data sources
 
@@ -122,20 +122,20 @@ Run `make help` for all commands.
 
 **Make targets (from repo root):**
 
-| Command | Description |
-|---------|-------------|
-| `make help` | Show all available commands |
-| `make dev` | Start API + Web concurrently (requires docker-up) |
-| `make docker-up` / `make docker-down` | Start or stop Redis & Postgres |
-| `make run-api` | Start FastAPI server |
-| `make run-web` | Start Next.js frontend |
-| `make test` | Run API tests |
-| `make test-web` | Run Next.js component tests |
-| `make lint` | Run ruff linting |
-| `make db-generate` | Generate Drizzle migrations |
-| `make db-migrate` | Apply migrations to Neon auth DB |
-| `make db-push` | Push schema directly (dev shortcut) |
-| `make db-studio` | Open Drizzle Studio |
+| Command                               | Description                                       |
+| ------------------------------------- | ------------------------------------------------- |
+| `make help`                           | Show all available commands                       |
+| `make dev`                            | Start API + Web concurrently (requires docker-up) |
+| `make docker-up` / `make docker-down` | Start or stop Redis & Postgres                    |
+| `make run-api`                        | Start FastAPI server                              |
+| `make run-web`                        | Start Next.js frontend                            |
+| `make test`                           | Run API tests                                     |
+| `make test-web`                       | Run Next.js component tests                       |
+| `make lint`                           | Run ruff linting                                  |
+| `make db-generate`                    | Generate Drizzle migrations                       |
+| `make db-migrate`                     | Apply migrations to Neon auth DB                  |
+| `make db-push`                        | Push schema directly (dev shortcut)               |
+| `make db-studio`                      | Open Drizzle Studio                               |
 
 **API (from project root):** `uv sync`, activate venv, then `make run-api` or `PYTHONPATH=apps/api uvicorn src.main:app --reload`. Tests: `PYTHONPATH=apps/api pytest apps/api/tests -v`. Lint: `ruff check .`
 
