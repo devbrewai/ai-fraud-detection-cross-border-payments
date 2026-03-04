@@ -1,54 +1,41 @@
-# Sentinel: AI fraud detection & sanctions screening for cross-border payments
+# Sentinel
 
-An open-source research case study from [Devbrew](https://www.devbrew.ai) demonstrating AI fraud detection and sanctions screening (using OFAC lists) for cross-border payments.
+AI fraud detection and sanctions screening (using OFAC lists) for cross-border payments.
 
-**[Read full case study →](https://www.devbrew.ai/case-studies/sentinel)**
+[![Sentinel demo](assets/demo-thumbnail.png)](https://youtu.be/NNC8YpdBePY)
 
-This reference pipeline combines public datasets (IEEE-CIS, PaySim, OFAC) with modern ML and API tooling to:
+**Live demo:** [sentinel.devbrew.ai](https://sentinel.devbrew.ai) · **Watch the full demo** → [YouTube](https://youtu.be/NNC8YpdBePY)
 
-- Detect fraud in **card-not-present (CNP) transactions** using trained ML models
-- Screen transaction parties against the **OFAC Sanctions Lists** with fuzzy-matching techniques
-- Deliver explainable fraud risk scores in real time, with a latency target of **sub-200ms**
+The live app enables SHAP explanations for every transaction (~1–1.5s extra); the API alone reaches <50ms p95 when explainability is off.
 
-**Deliverables:**
+**Full case study:** [devbrew.ai/case-studies/sentinel](https://www.devbrew.ai/case-studies/sentinel)
 
-- Notebooks for building and training fraud detection models and sanctions screeners
-- A FastAPI service for real-time model inference
-- A demo UI with fraud scores and explainability outputs
-- Documentation and reference architecture
+## Features
+
+- **CNP fraud detection** — Trained ML models for card-not-present transactions
+- **OFAC sanctions screening** — Fuzzy matching against OFAC SDN and Consolidated lists
+- **Explainable risk scores** — Real-time fraud risk with SHAP explanations; sub-200ms latency target
+- **Notebooks** — EDA, model training, and sanctions screener build
+- **FastAPI scoring service** — Real-time inference with Redis velocity features and PostgreSQL audit
+- **Demo UI** — Transaction screening, batch requests, dashboard, PDF export
 
 > [!WARNING]
->
 > **For research/educational use only**
 >
-> Models trained on IEEE-CIS data are restricted to **non-commercial use**.
-> Production deployments require retraining on proprietary or licensed datasets.
-
-**License:** Apache 2.0
-
-## Demo
-
-**Live demo:** [sentinel.devbrew.ai](https://sentinel.devbrew.ai)
-
-**Video walkthrough:** [coming soon]
-
-**Demo note:** The live demo requests SHAP explanations (`?explain=true`) for every transaction to demonstrate model transparency. This adds ~1-1.5s overhead for explainability generation. The underlying scoring API achieves <50ms p95 latency when explainability is not requested (standard production pattern).
-
-## Data sources
-
-- **Fraud detection**
-  - [IEEE-CIS e-commerce fraud dataset](https://www.kaggle.com/c/ieee-fraud-detection) - research only (non-commercial license)
-  - [PaySim synthetic mobile money dataset](https://www.kaggle.com/ntnu-testimon/paysim1) - open data
-- **Sanctions screening**
-  - [OFAC SDN and Consolidated Lists](https://sanctionslist.ofac.treas.gov/Home) - public domain
+> Models trained on IEEE-CIS data are restricted to **non-commercial use**. Production deployments require retraining on proprietary or licensed datasets.
 
 ## Tech stack
 
-- **Backend**: FastAPI, Python, LightGBM/XGBoost, Redis, PostgreSQL
-- **Frontend**: Next.js, Tailwind CSS, Recharts
-- **Hosting**: Render (API), Vercel (UI)
+- **Backend:** FastAPI, Python, LightGBM/XGBoost, Redis, PostgreSQL
+- **Frontend:** Next.js, Tailwind CSS, Recharts
+- **Hosting:** Render (API), Vercel (UI)
 
-## Repo structure
+## Data sources
+
+- **Fraud:** [IEEE-CIS e-commerce](https://www.kaggle.com/c/ieee-fraud-detection) (research only), [PaySim](https://www.kaggle.com/ntnu-testimon/paysim1) (open)
+- **Sanctions:** [OFAC SDN and Consolidated Lists](https://sanctionslist.ofac.treas.gov/Home) (public domain)
+
+## Repository structure
 
 ```
 sentinel/
@@ -57,11 +44,9 @@ sentinel/
   │   └── web/           # Next.js demo UI
   ├── packages/
   │   ├── models/        # trained artifacts, ONNX exports
-  │   └── shared/        # schemas, utils
+  │   └── compliance/    # sanctions screening
   ├── data_catalog/      # dataset download scripts + notes
-  ├── docs/
-  │   ├── findings/      # phase-by-phase technical findings
-  │   └── ...            # roadmap, requirements
+  ├── docs/              # findings, roadmap, requirements
   └── notebooks/         # EDA + model training
 ```
 
@@ -79,93 +64,57 @@ cd sentinel
 **Using UV (recommended):**
 
 ```bash
-# Install UV
 curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Sync dependencies (creates .venv automatically)
 uv sync
-
-# Activate virtual environment
-source .venv/bin/activate   # Linux/Mac
-.venv\Scripts\activate      # Windows
+source .venv/bin/activate   # Linux/macOS
+# .venv\Scripts\activate   # Windows
 ```
 
 **Or using pip:**
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate   # Linux/Mac
-.venv\Scripts\activate      # Windows
-
-uv pip install -e .         # Install from pyproject.toml
+source .venv/bin/activate
+uv pip install -e .
 ```
 
 ### 3. Run API locally
 
 ```bash
-# Start infrastructure (Redis & Postgres)
 make docker-up
-
-# Run the API
 make run-api
 ```
 
-Run `make help` to see all available commands.
+Run `make help` for all commands.
 
 ### 4. Run frontend
 
 ```bash
 cd apps/web
 bun install
-
-# Set up auth database (requires Neon Postgres — see apps/web/.env.example)
-cp .env.example .env.local   # then fill in your values
-bun run db:generate
-bun run db:migrate
-
-bun run dev
 ```
+
+See [apps/web/README.md](apps/web/README.md) or [CLAUDE.md](CLAUDE.md) for auth (Neon) and database setup. Then: copy `.env.example` to `.env.local`, run `bun run db:generate` and `bun run db:migrate`, then `bun run dev`.
 
 ## Documentation
 
-### Project planning
-
-- [Research requirements](./docs/research-requirements.md) — detailed case study specifications
-- [Roadmap](./docs/roadmap.md) — project phases and success criteria
-
-### Technical findings
-
-- [Phase 1: Data exploration](./docs/findings/data-exploration-notes.md) — dataset analysis, feature engineering insights
-- [Phase 2: Model training](./docs/findings/model-training-notes.md) — performance metrics, cost optimization, hyperparameter tuning
-- [Phase 3: Sanctions screening](./docs/findings/sanctions-screening-notes.md) — fuzzy matching implementation, blocking strategies, and performance evaluation
-- [Phase 4: API implementation](./docs/findings/api-implementation-notes.md) — FastAPI service architecture and performance optimization
+- **Development:** [CLAUDE.md](CLAUDE.md) — commands, architecture, and conventions
+- **Research:** [docs/](docs/) and [case study](https://www.devbrew.ai/case-studies/sentinel) — phases, findings, and requirements
 
 ## Disclaimer
 
-This repository is provided for **educational and research purposes only**.
-
-- The **IEEE-CIS Fraud Dataset** is licensed for **non-commercial use only** and may not be redistributed or used to train commercial models.
-- Any **trained model artifacts** derived from IEEE-CIS data are intended solely for demonstration and benchmarking.
-- For production systems, you must retrain the pipeline on your own **proprietary or licensed datasets**.
-- The **PaySim** and **OFAC Sanctions Lists** datasets are open/public and may be used more broadly, subject to their respective terms.
-
-Devbrew makes no representations or warranties regarding the suitability of this code for production use. Use at your own risk and ensure compliance with all applicable laws, regulations, and dataset licenses.
+This repository is for **educational and research use only**. The IEEE-CIS dataset and any models trained on it are non-commercial; model artifacts here are for demonstration. Production use requires retraining on your own data. PaySim and OFAC data are subject to their respective terms. See [LICENSE](./LICENSE) and [NOTICE](./NOTICE) for full terms and dataset attributions.
 
 ## License
 
-Apache 2.0 © Devbrew LLC. See [LICENSE](./LICENSE).
-
-[NOTICE](./NOTICE) file includes dataset attributions.
+Apache 2.0 © Devbrew LLC. See [LICENSE](./LICENSE). [NOTICE](./NOTICE) includes dataset attributions.
 
 ## Contributing
 
-Contributions are welcome!
-
-- Open an issue for bugs or feature requests.
-- Submit a PR following our contribution guidelines [here](./CONTRIBUTING.md).
+Contributions are welcome. Open an issue for bugs or features; submit a PR following [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## Contact
 
-Questions about this research project? Reach out at **hello@devbrew.ai**
+Questions? **hello@devbrew.ai**
 
-**Note:** We cannot provide commercial licensing for models trained on IEEE-CIS data due to dataset restrictions. For production fraud detection systems, contact us about building custom solutions with licensed data.
+We cannot provide commercial licensing for models trained on IEEE-CIS data. For production fraud detection, contact us about custom solutions with licensed data.
