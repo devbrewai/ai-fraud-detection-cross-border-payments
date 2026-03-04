@@ -1,10 +1,11 @@
 <div align="center">
   <img src="apps/web/public/logos/logo.svg" alt="Sentinel" width="280">
+  <p>
+    AI fraud detection and sanctions screening (using OFAC lists) for cross-border payments.
+  </p>
 </div>
 
-AI fraud detection and sanctions screening (using OFAC lists) for cross-border payments.
-
-[![Sentinel demo](assets/sentinel-demo-thumbnai.png)](https://youtu.be/NNC8YpdBePY)
+[![Sentinel demo](assets/sentinel-demo-thumbnail.png)](https://youtu.be/NNC8YpdBePY)
 
 **Live demo:** [sentinel.devbrew.ai](https://sentinel.devbrew.ai) · **Watch the full demo** [YouTube](https://youtu.be/NNC8YpdBePY)
 
