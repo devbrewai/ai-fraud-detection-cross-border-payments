@@ -47,7 +47,13 @@ class AuditService:
     def __init__(self):
         if settings.DATABASE_URL:
             db_url, connect_args = self._prepare_asyncpg_url(str(settings.DATABASE_URL))
-            self.engine = create_async_engine(db_url, echo=False, connect_args=connect_args)
+            self.engine = create_async_engine(
+                db_url,
+                echo=False,
+                connect_args=connect_args,
+                pool_pre_ping=True,
+                pool_recycle=300,
+            )
             self.async_session = sessionmaker(
                 self.engine, class_=AsyncSession, expire_on_commit=False
             )
@@ -261,4 +267,3 @@ class AuditService:
             }
 
 audit_service = AuditService()
-
